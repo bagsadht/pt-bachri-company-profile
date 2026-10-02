@@ -84,7 +84,6 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     align-items:center;
     overflow:hidden;
 }
-
 .hp-hero-photo{
     position:absolute;inset:0;z-index:1;
     background-size:cover;
@@ -124,37 +123,21 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
 }
 #hp-hero .hp-hero-eyebrow{
     font-family:'Inter',sans-serif;
-    font-weight:700;
-    font-size:12px;
-    line-height:1;
-    letter-spacing:.4em;
-    text-transform:uppercase;
-    color:#FFD11A;
-    text-shadow:
-        0 1px 0 rgba(0,0,0,.85),
-        0 2px 6px rgba(0,0,0,.75),
-        0 4px 14px rgba(241,196,15,.35);
+    font-weight:700;font-size:12px;line-height:1;letter-spacing:.4em;
+    text-transform:uppercase;color:#FFD11A;
+    text-shadow:0 1px 0 rgba(0,0,0,.85),0 2px 6px rgba(0,0,0,.75),0 4px 14px rgba(241,196,15,.35);
 }
 #hp-hero .hp-hero-sub{
-    font-family:'Inter',sans-serif;
-    color:#FFFFFF;
-    font-weight:600;
-    letter-spacing:-.008em;
+    font-family:'Inter',sans-serif;color:#FFFFFF;font-weight:600;letter-spacing:-.008em;
     text-shadow:0 2px 10px rgba(0,0,0,1),0 1px 3px rgba(0,0,0,.9);
 }
 #hp-hero .hp-hero-desc{
-    font-family:'Inter',sans-serif;
-    color:#E2E8F0;
-    font-weight:400;
+    font-family:'Inter',sans-serif;color:#E2E8F0;font-weight:400;
     text-shadow:0 2px 10px rgba(0,0,0,1),0 1px 3px rgba(0,0,0,.9);
 }
 #hp-hero .hp-gold-word{
     color:#FFD11A;
-    text-shadow:
-        0 1px 0 rgba(0,0,0,.85),
-        0 2px 4px rgba(0,0,0,.75),
-        0 6px 18px rgba(0,0,0,.5),
-        0 16px 48px rgba(0,0,0,.3);
+    text-shadow:0 1px 0 rgba(0,0,0,.85),0 2px 4px rgba(0,0,0,.75),0 6px 18px rgba(0,0,0,.5),0 16px 48px rgba(0,0,0,.3);
     -webkit-text-stroke:0.4px rgba(0,0,0,.25);
 }
 
@@ -232,20 +215,153 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
 @keyframes hp-shine{to{left:160%}}
 
 /* ============================================================
-   SPACE SCENE
+   SPACE BG — Ken Burns super halus
+   ============================================================ */
+.hp-space-bg{
+    position:absolute;inset:0;z-index:0;overflow:hidden;
+    pointer-events:none;background-color:#0B1226;
+}
+.hp-space-bg::before{
+    content:"";
+    position:absolute;inset:-20%;
+    background-image:var(--hp-header-url);
+    background-size:cover;background-position:center;background-repeat:no-repeat;
+    filter:blur(85px) saturate(0.55) brightness(0.35);
+    opacity:.62;
+    transform:translate3d(0,0,0) scale(1.06);
+    animation:hp-space-kenburns 70s cubic-bezier(.4,0,.6,1) infinite alternate;
+    will-change:transform;
+    backface-visibility:hidden;
+}
+.hp-space-bg::after{
+    content:"";position:absolute;inset:0;
+    background:
+        radial-gradient(ellipse 80% 60% at 50% 50%,transparent 25%,rgba(11,18,38,.75) 85%),
+        linear-gradient(180deg,rgba(11,18,38,.55) 0%,rgba(11,18,38,.15) 35%,rgba(11,18,38,.65) 100%);
+    pointer-events:none;
+}
+@keyframes hp-space-kenburns{
+    0%   { transform:translate3d(0,0,0) scale(1.06); }
+    100% { transform:translate3d(-1%,-1.2%,0) scale(1.14); }
+}
+
+/* ============================================================
+   🏙️ SKYLINE — seamless loop, dua layer paralaks
+   ============================================================ */
+.hp-city{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    height:220px;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+    opacity:.42;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 40%,#000 100%);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 40%,#000 100%);
+}
+
+/* Container yg berisi 2 copy SVG identik untuk seamless loop */
+.hp-city-track{
+    position:absolute;
+    bottom:0;left:0;
+    display:flex;
+    width:max-content;
+    will-change:transform;
+    backface-visibility:hidden;
+    transform:translate3d(0,0,0);
+}
+.hp-city-track svg{
+    display:block;
+    flex:0 0 auto;
+    width:2400px;
+    height:220px;
+}
+.hp-city-track-back{
+    animation:hp-city-scroll 180s linear infinite;
+    opacity:.55;
+}
+.hp-city-track-front{
+    animation:hp-city-scroll 130s linear infinite;
+}
+
+@keyframes hp-city-scroll{
+    0%   { transform:translate3d(0,0,0); }
+    100% { transform:translate3d(-2400px,0,0); }
+}
+
+/* Jendela berkedip — smooth, bukan snap */
+.hp-city .win{
+    animation:hp-win-flicker 8s cubic-bezier(.4,0,.6,1) infinite;
+    will-change:opacity;
+}
+.hp-city .win:nth-child(3n){animation-duration:11s;animation-delay:-2s}
+.hp-city .win:nth-child(5n){animation-duration:13s;animation-delay:-5s}
+.hp-city .win:nth-child(7n){animation-duration:9s;animation-delay:-7s}
+@keyframes hp-win-flicker{
+    0%, 80%, 100% { opacity:1; }
+    84%           { opacity:.25; }
+    88%           { opacity:1; }
+    92%           { opacity:.6; }
+    96%           { opacity:1; }
+}
+
+/* Lampu antenna — pulse lembut */
+.hp-city .antenna-light{
+    animation:hp-antenna-pulse 3.6s ease-in-out infinite;
+    will-change:opacity;
+}
+.hp-city .antenna-light:nth-of-type(2){animation-delay:-1.2s}
+.hp-city .antenna-light:nth-of-type(3){animation-delay:-2.4s}
+@keyframes hp-antenna-pulse{
+    0%,100% { opacity:1;   }
+    50%     { opacity:.15; }
+}
+
+/* ============================================================
+   🏗️ CRANE — pendulum halus
+   ============================================================ */
+.hp-crane{
+    position:absolute;
+    bottom:0;
+    z-index:0;
+    pointer-events:none;
+    opacity:.32;
+    width:180px;height:200px;
+}
+.hp-crane.right{ right:5%; }
+.hp-crane.left{ left:5%; }
+
+.hp-crane .arm{
+    transform-origin:50px 40px;
+    transform:rotate(0deg);
+    animation:hp-crane-swing 18s cubic-bezier(.45,0,.55,1) infinite;
+    will-change:transform;
+    backface-visibility:hidden;
+}
+@keyframes hp-crane-swing{
+    0%, 100% { transform:rotate(-4deg); }
+    50%      { transform:rotate(4deg);  }
+}
+
+/* Kabel hook naik-turun halus */
+.hp-crane .hook{
+    animation:hp-hook-bob 7s cubic-bezier(.45,0,.55,1) infinite;
+    will-change:transform;
+}
+@keyframes hp-hook-bob{
+    0%,100% { transform:translateY(0); }
+    50%     { transform:translateY(8px); }
+}
+
+/* ============================================================
+   STARS
    ============================================================ */
 .hp-stars{
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    z-index:0;
-    overflow:hidden;
+    position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden;
 }
 .hp-stars::before,
 .hp-stars::after{
-    content:"";
-    position:absolute;
-    inset:-50%;
+    content:"";position:absolute;inset:-50%;
     background-repeat:repeat;
     will-change:opacity,transform;
     backface-visibility:hidden;
@@ -263,7 +379,7 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
         radial-gradient(1.4px 1.4px at 60px 440px, rgba(255,255,255,.9), transparent),
         radial-gradient(1.8px 1.8px at 220px 480px, #FFD11A, transparent);
     background-size:360px 360px;
-    animation:hp-twinkle 3.5s ease-in-out infinite, hp-drift-a 90s linear infinite;
+    animation:hp-twinkle 5.5s ease-in-out infinite, hp-drift-a 120s linear infinite;
 }
 .hp-stars::after{
     background-image:
@@ -276,202 +392,106 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
         radial-gradient(1.2px 1.2px at 160px 480px, #FFFFFF, transparent),
         radial-gradient(2px 2px at 400px 420px, #FFFFFF, transparent);
     background-size:440px 440px;
-    animation:hp-twinkle 5s ease-in-out infinite, hp-drift-b 140s linear infinite;
-    animation-delay:-1.5s, 0s;
+    animation:hp-twinkle 8s ease-in-out infinite, hp-drift-b 180s linear infinite;
+    animation-delay:-2s, 0s;
 }
 @keyframes hp-twinkle{
     0%, 100% { opacity: .35; }
     50%      { opacity: 1;   }
 }
 @keyframes hp-drift-a{
-    from { transform: translate3d(0,0,0); }
-    to   { transform: translate3d(-360px,-360px,0); }
+    0%   { transform: translate3d(0,0,0); }
+    100% { transform: translate3d(-360px,-360px,0); }
 }
 @keyframes hp-drift-b{
-    from { transform: translate3d(0,0,0); }
-    to   { transform: translate3d(-440px,220px,0); }
+    0%   { transform: translate3d(0,0,0); }
+    100% { transform: translate3d(-440px,220px,0); }
 }
 
 .hp-nebula{
-    position:absolute;
-    inset:-10%;
-    z-index:0;
-    pointer-events:none;
+    position:absolute;inset:-10%;z-index:1;pointer-events:none;
     background:
-        radial-gradient(ellipse 40% 30% at 15% 30%, rgba(49,63,126,.32), transparent 70%),
-        radial-gradient(ellipse 30% 25% at 85% 70%, rgba(237,194,115,.12), transparent 70%),
-        radial-gradient(ellipse 45% 35% at 70% 15%, rgba(80,50,140,.20), transparent 70%);
-    filter: blur(20px);
-    animation: hp-nebula-shift 40s ease-in-out infinite alternate;
+        radial-gradient(ellipse 40% 30% at 15% 30%, rgba(49,63,126,.26), transparent 70%),
+        radial-gradient(ellipse 30% 25% at 85% 70%, rgba(237,194,115,.09), transparent 70%),
+        radial-gradient(ellipse 45% 35% at 70% 15%, rgba(80,50,140,.14), transparent 70%);
+    filter: blur(22px);
+    animation: hp-nebula-shift 60s cubic-bezier(.4,0,.6,1) infinite alternate;
+    will-change:transform;
 }
 @keyframes hp-nebula-shift{
     0%   { transform: translate3d(0,0,0) scale(1); }
-    100% { transform: translate3d(3%,-2%,0) scale(1.08); }
+    100% { transform: translate3d(2%,-1.5%,0) scale(1.05); }
 }
 
 .hp-grid-bg{
-    position:absolute;
-    inset:0;
-    z-index:0;
-    pointer-events:none;
+    position:absolute;inset:0;z-index:1;pointer-events:none;
     background-image:
-        linear-gradient(rgba(237,194,115,.07) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(237,194,115,.07) 1px, transparent 1px);
+        linear-gradient(rgba(237,194,115,.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(237,194,115,.055) 1px, transparent 1px);
     background-size:72px 72px;
     -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 50%, #000 15%, transparent 78%);
     mask-image:radial-gradient(ellipse 80% 70% at 50% 50%, #000 15%, transparent 78%);
-    animation:hp-grid-drift 60s linear infinite;
+    animation:hp-grid-drift 90s linear infinite;
+    will-change:background-position;
 }
 @keyframes hp-grid-drift{
-    from{background-position:0 0, 0 0;}
-    to  {background-position:72px 72px, 72px 72px;}
+    0%   { background-position:0 0, 0 0; }
+    100% { background-position:72px 72px, 72px 72px; }
 }
 
 .hp-dust{
-    position:absolute;
-    inset:0;
-    z-index:0;
-    pointer-events:none;
-    overflow:hidden;
+    position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;
 }
 .hp-dust span{
-    position:absolute;
-    bottom:-10px;
-    width:3px;
-    height:3px;
-    border-radius:50%;
+    position:absolute;bottom:-10px;
+    width:3px;height:3px;border-radius:50%;
     background:#EDC273;
-    box-shadow:0 0 6px rgba(237,194,115,.8), 0 0 12px rgba(237,194,115,.4);
+    box-shadow:0 0 6px rgba(237,194,115,.75),0 0 12px rgba(237,194,115,.35);
     opacity:0;
     animation-name:hp-dust-rise;
-    animation-timing-function:linear;
+    animation-timing-function:cubic-bezier(.45,0,.55,1);
     animation-iteration-count:infinite;
     will-change:transform,opacity;
 }
 .hp-dust span:nth-child(3n){
-    width:2px;height:2px;
-    background:#FFF;
+    width:2px;height:2px;background:#FFF;
     box-shadow:0 0 4px rgba(255,255,255,.7);
 }
 .hp-dust span:nth-child(5n){
-    width:4px;height:4px;
-    background:#F1C40F;
-    box-shadow:0 0 8px rgba(241,196,15,.9);
+    width:4px;height:4px;background:#F1C40F;
+    box-shadow:0 0 8px rgba(241,196,15,.85);
 }
 @keyframes hp-dust-rise{
     0%   { transform:translate3d(0,0,0) scale(.6);          opacity:0; }
-    12%  { opacity:.75; }
-    85%  { opacity:.75; }
-    100% { transform:translate3d(24px,-110vh,0) scale(.8);  opacity:0; }
+    15%  { opacity:.7; }
+    85%  { opacity:.7; }
+    100% { transform:translate3d(20px,-110vh,0) scale(.85); opacity:0; }
 }
 
 .hp-shoot{
     position:absolute;
-    width:180px;
-    height:2px;
-    border-radius:2px;
-    background:linear-gradient(90deg,
-        transparent 0%,
-        rgba(255,255,255,.12) 25%,
-        rgba(255,255,255,.8) 70%,
-        #FFFFFF 100%);
-    filter:drop-shadow(0 0 6px rgba(255,255,255,.85))
-           drop-shadow(0 0 14px rgba(237,194,115,.55));
-    opacity:0;
-    z-index:1;
-    pointer-events:none;
+    width:180px;height:2px;border-radius:2px;
+    background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.12) 25%,rgba(255,255,255,.75) 70%,#FFFFFF 100%);
+    filter:drop-shadow(0 0 6px rgba(255,255,255,.8)) drop-shadow(0 0 14px rgba(237,194,115,.5));
+    opacity:0;z-index:2;pointer-events:none;
     will-change:transform,opacity;
+    backface-visibility:hidden;
 }
 .hp-shoot::after{
-    content:"";
-    position:absolute;
-    right:-3px;top:50%;
-    width:6px;height:6px;
-    margin-top:-3px;
-    border-radius:50%;
+    content:"";position:absolute;right:-3px;top:50%;
+    width:6px;height:6px;margin-top:-3px;border-radius:50%;
     background:#FFFFFF;
-    box-shadow:0 0 10px rgba(255,255,255,.9), 0 0 22px rgba(237,194,115,.7);
+    box-shadow:0 0 10px rgba(255,255,255,.9),0 0 22px rgba(237,194,115,.7);
 }
-.hp-shoot-1{top:12%; left:-220px;              animation:hp-shoot-fly 11s ease-in infinite 2s;}
-.hp-shoot-2{top:40%; left:-220px; width:130px;  animation:hp-shoot-fly 14s ease-in infinite 9s;}
-.hp-shoot-3{top:70%; left:-220px; width:210px;  animation:hp-shoot-fly 17s ease-in infinite 16s;}
-.hp-shoot-4{top:25%; left:-220px; width:150px;  animation:hp-shoot-fly 13s ease-in infinite 24s;}
+.hp-shoot-1{top:12%; left:-220px;              animation:hp-shoot-fly 14s cubic-bezier(.4,0,.6,1) infinite 2s;}
+.hp-shoot-2{top:40%; left:-220px; width:130px;  animation:hp-shoot-fly 18s cubic-bezier(.4,0,.6,1) infinite 10s;}
+.hp-shoot-3{top:70%; left:-220px; width:210px;  animation:hp-shoot-fly 21s cubic-bezier(.4,0,.6,1) infinite 17s;}
+.hp-shoot-4{top:25%; left:-220px; width:150px;  animation:hp-shoot-fly 16s cubic-bezier(.4,0,.6,1) infinite 26s;}
 @keyframes hp-shoot-fly{
-    0%   { transform:translate3d(0,0,0) rotate(-18deg);                          opacity:0; }
-    5%   { opacity:1; }
-    22%  { opacity:0; }
-    100% { transform:translate3d(calc(100vw + 420px),-200px,0) rotate(-18deg);   opacity:0; }
-}
-
-/* ============================================================
-   ROKET — terbang KE ATAS, di sisi kiri & kanan heading
-   ============================================================ */
-.hp-rk-zone{
-    position:absolute;
-    inset:-90px;
-    pointer-events:none;
-    z-index:1;
-    overflow:visible;
-}
-
-.hp-rk-v{
-    position:absolute;
-    bottom:0;
-    width:52px;
-    height:160px;
-    opacity:0;
-    will-change:transform,opacity;
-}
-.hp-rk-v.left{ left:0; }
-.hp-rk-v.right{ right:0; }
-
-/* Craft: rotasi -90deg supaya hidung roket menunjuk ke atas */
-.hp-rk-v .hp-rocket-craft{
-    position:absolute;
-    top:50%; left:50%;
-    width:160px;
-    height:53px;
-    transform:translate(-50%,-50%) rotate(-90deg);
-    transform-origin:center center;
-    filter:
-        drop-shadow(0 0 18px rgba(241,196,15,.5))
-        drop-shadow(0 0 5px rgba(255,255,255,.4));
-}
-.hp-rk-v .hp-rocket-craft svg{
-    width:100%;
-    height:100%;
-    display:block;
-    overflow:visible;
-}
-
-/* Animasi terbang ke atas */
-.hp-rk-v.a{
-    animation:hp-rk-up 8s cubic-bezier(.4,0,.6,1) infinite;
-}
-.hp-rk-v.b{
-    animation:hp-rk-up 10s cubic-bezier(.4,0,.6,1) infinite;
-    animation-delay:2.5s;
-}
-.hp-rk-v.c{
-    animation:hp-rk-up 9s cubic-bezier(.4,0,.6,1) infinite;
-    animation-delay:5s;
-}
-.hp-rk-v.d{
-    animation:hp-rk-up 11s cubic-bezier(.4,0,.6,1) infinite;
-    animation-delay:7s;
-}
-
-@keyframes hp-rk-up{
-    0%   { transform:translateY(85%);   opacity:0; }
-    12%  { opacity:1; }
-    88%  { opacity:1; }
-    100% { transform:translateY(-240%); opacity:0; }
-}
-
-/* Wrapper heading supaya zone bisa diposisikan relatif */
-.hp-rk-host{
-    position:relative;
-    display:block;
+    0%   { transform:translate3d(0,0,0) rotate(-18deg);                        opacity:0; }
+    4%   { opacity:1; }
+    20%  { opacity:0; }
+    100% { transform:translate3d(calc(100vw + 420px),-180px,0) rotate(-18deg); opacity:0; }
 }
 
 /* ============================================================
@@ -479,54 +499,42 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
    ============================================================ */
 .hp-about-section,
 .hp-gal,
+.hp-clients-section,
 #contact{
     background-color:#0B1226;
+    position:relative;
+    overflow:hidden;
+}
+.hp-about-section .hp-wrap,
+.hp-gal .hp-wrap,
+.hp-clients-section .hp-wrap,
+#contact .hp-wrap{
+    position:relative;z-index:3;
 }
 
 /* ============================================================
    TENTANG KAMI
    ============================================================ */
-.hp-about-section{
-    position:relative;
-    padding:100px 0 75px;
-    color:#FFFFFF;
-    overflow:hidden;
-}
-@media(min-width:1024px){
-    .hp-about-section{padding:120px 0 85px}
-}
-.hp-about-section .hp-wrap{
-    max-width:1200px;
-    margin:0 auto;
-    padding:0 20px;
-    position:relative;
-    z-index:1;
-}
-.hp-about-grid{
-    display:grid;
-    grid-template-columns:1fr 1.2fr;
-    gap:50px;
-    align-items:center;
-}
-@media(max-width:968px){
-    .hp-about-grid{grid-template-columns:1fr;gap:40px}
-}
+.hp-about-section{padding:100px 0 75px;color:#FFFFFF}
+@media(min-width:1024px){.hp-about-section{padding:120px 0 85px}}
+.hp-about-section .hp-wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+.hp-about-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:50px;align-items:center}
+@media(max-width:968px){.hp-about-grid{grid-template-columns:1fr;gap:40px}}
 
 .hp-about-image-card{
     position:relative;
     background:rgba(13,19,56,.6);
-    border-radius:20px;
-    padding:30px;
+    border-radius:20px;padding:30px;
     display:flex;align-items:center;justify-content:center;
     box-shadow:0 20px 40px rgba(0,0,0,.4);
     overflow:hidden;
-    transition:transform .4s ease;
+    transition:transform .5s cubic-bezier(.19,1,.22,1);
 }
 .hp-about-image-card::before{
     content:'';position:absolute;inset:-2px;
     background:conic-gradient(from 0deg at 50% 50%,rgba(241,196,15,0) 60%,rgba(241,196,15,.9) 80%,#FFFFFF 100%);
     border-radius:22px;z-index:0;
-    animation:rotateGoldBorder 4s linear infinite;
+    animation:rotateGoldBorder 6s linear infinite;
 }
 .hp-about-image-card::after{
     content:'';position:absolute;inset:1px;
@@ -543,35 +551,17 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     border:1px solid rgba(241,196,15,.2);
     border-radius:14px;
     display:flex;align-items:center;justify-content:center;
-    overflow:hidden;
-    padding:30px;
+    overflow:hidden;padding:30px;
 }
 .hp-about-img{
     max-width:100%;max-height:100%;
     object-fit:contain;
     filter:drop-shadow(0 4px 16px rgba(0,0,0,.4));
-    transition:transform .4s ease;
+    transition:transform .5s cubic-bezier(.19,1,.22,1);
 }
 .hp-about-image-card:hover .hp-about-img{transform:scale(1.05)}
-
 .hp-about-content{padding-top:10px}
-
-/* Perbaikan Head & Penyelarasan Roket */
-.hp-about-head{
-    position:relative;
-    margin-bottom:20px;
-    padding: 0; /* Dihilangkan agar lurus dengan paragraf dan fitur di bawahnya */
-}
-
-/* Jika roket menggunakan zone khusus di samping judul, atur posisinya secara absolut */
-.hp-rk-zone {
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    z-index: 1;
-}
+.hp-about-head{position:relative;margin-bottom:20px}
 
 .hp-section-eyebrow{
     font-family:'Inter',sans-serif;
@@ -583,8 +573,6 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     font-size:clamp(32px,4vw,44px);
     font-weight:700;line-height:1.2;
     color:#FFFFFF;margin-bottom:0;letter-spacing:-.02em;
-    position:relative;
-    z-index:2;
 }
 .hp-about-desc{
     font-family:'Inter',sans-serif;
@@ -595,7 +583,7 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
 .hp-feature-item{
     display:flex;gap:16px;align-items:flex-start;
     padding:12px 16px;border-radius:12px;
-    transition:background .3s ease,transform .3s ease;
+    transition:background .3s ease,transform .35s cubic-bezier(.19,1,.22,1);
 }
 .hp-feature-item:hover{background:rgba(255,255,255,.03);transform:translateX(6px)}
 .hp-feature-icon{
@@ -611,162 +599,87 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     background:#F1C40F;color:#080d2c;
     box-shadow:0 0 12px rgba(241,196,15,.5);
 }
-.hp-feature-item h4{
-    font-family:'Outfit',sans-serif;
-    font-size:17px;font-weight:600;color:#FFFFFF;margin-bottom:4px;
-}
-.hp-feature-item p{
-    font-family:'Inter',sans-serif;
-    font-size:14px;color:#94A3B8;line-height:1.5;margin:0;
-}
+.hp-feature-item h4{font-family:'Outfit',sans-serif;font-size:17px;font-weight:600;color:#FFFFFF;margin-bottom:4px}
+.hp-feature-item p{font-family:'Inter',sans-serif;font-size:14px;color:#94A3B8;line-height:1.5;margin:0}
+
 /* ============================================================
    GALERI
    ============================================================ */
-.hp-gal{
-    position:relative;
-    color:#fff;
-    padding:45px 0 100px;
-}
-@media(min-width:1024px){
-    .hp-gal{padding:55px 0 120px}
-}
-.hp-gal .hp-wrap{
-    position:relative;
-    z-index:1;
-}
+.hp-gal{color:#fff;padding:45px 0 100px}
+@media(min-width:1024px){.hp-gal{padding:55px 0 120px}}
 
-.hp-gal-top{
-    max-width:640px;
-    margin:0 auto 48px;
-    text-align:center;
-    position:relative;
-    z-index:1;
-}
-.hp-gal-head{
-    position:relative;
-    display:block;
-    padding:0 40px;
-}
+.hp-gal-top{max-width:640px;margin:0 auto 48px;text-align:center;position:relative}
+.hp-gal-head{position:relative;display:block}
 .hp-gal-eyebrow{
-    display:inline-flex;
-    align-items:center;
-    gap:12px;
+    display:inline-flex;align-items:center;gap:12px;
     font-family:'Inter',sans-serif;
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:.32em;
-    text-transform:uppercase;
-    color:#EDC273;
-    margin-bottom:20px;
+    font-size:11px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;
+    color:#EDC273;margin-bottom:20px;
 }
-.hp-gal-eyebrow::before,
-.hp-gal-eyebrow::after{
-    content:"";
-    width:28px;height:1px;
-    background:rgba(237,194,115,.5);
+.hp-gal-eyebrow::before,.hp-gal-eyebrow::after{
+    content:"";width:28px;height:1px;background:rgba(237,194,115,.5);
 }
 .hp-gal-title{
     font-family:'Outfit','Inter',sans-serif;
     font-size:clamp(32px,3.8vw,50px);
-    font-weight:700;
-    line-height:1.1;
-    letter-spacing:-.028em;
-    color:#fff;
-    margin:0 0 16px;
-    position:relative;
-    z-index:2;
+    font-weight:700;line-height:1.1;letter-spacing:-.028em;
+    color:#fff;margin:0 0 16px;
 }
 .hp-gal-title em{
-    font-family:'Cormorant Garamond',serif;
-    font-style:italic;
-    font-weight:600;
-    color:#C9932C;
-    letter-spacing:0;
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;
+    color:#C9932C;letter-spacing:0;
 }
 .hp-gal-sub{
     font-family:'Inter',sans-serif;
-    font-size:15px;
-    line-height:1.7;
-    color:rgba(255,255,255,.55);
-    margin:0;
+    font-size:15px;line-height:1.7;
+    color:rgba(255,255,255,.55);margin:0;
 }
 
-.hp-gal-grid{
-    display:grid;
-    grid-template-columns:repeat(12,1fr);
-    gap:20px;
-    position:relative;
-    z-index:1;
-}
+.hp-gal-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+@media(max-width:768px){.hp-gal-grid{gap:14px}}
+.hp-gal-item:nth-child(1),.hp-gal-item:nth-child(2){grid-column:span 6;aspect-ratio:4/3}
+.hp-gal-item:nth-child(3),.hp-gal-item:nth-child(4),.hp-gal-item:nth-child(5){grid-column:span 4;aspect-ratio:1/1}
 @media(max-width:768px){
-    .hp-gal-grid{gap:14px}
-}
-.hp-gal-item:nth-child(1),
-.hp-gal-item:nth-child(2){
-    grid-column:span 6;
-    aspect-ratio:4/3;
-}
-.hp-gal-item:nth-child(3),
-.hp-gal-item:nth-child(4),
-.hp-gal-item:nth-child(5){
-    grid-column:span 4;
-    aspect-ratio:1/1;
-}
-@media(max-width:768px){
-    .hp-gal-item:nth-child(1),
-    .hp-gal-item:nth-child(2),
-    .hp-gal-item:nth-child(3),
-    .hp-gal-item:nth-child(4),
-    .hp-gal-item:nth-child(5){
-        grid-column:span 12;
-        aspect-ratio:4/3;
-    }
+    .hp-gal-item:nth-child(1),.hp-gal-item:nth-child(2),
+    .hp-gal-item:nth-child(3),.hp-gal-item:nth-child(4),
+    .hp-gal-item:nth-child(5){grid-column:span 12;aspect-ratio:4/3}
 }
 
 .hp-gal-item{
-    position:relative;
-    display:block;
-    padding:0;border:0;
-    overflow:hidden;
-    border-radius:14px;
-    background:#0E1530;
-    cursor:zoom-in;
-    isolation:isolate;
+    position:relative;display:block;padding:0;border:0;
+    overflow:hidden;border-radius:14px;
+    background:#0E1530;cursor:zoom-in;isolation:isolate;
     box-shadow:0 24px 50px -30px rgba(0,0,0,.9);
 }
 .hp-gal-item img{
-    position:absolute;inset:0;
-    width:100%;height:100%;
-    object-fit:cover;
-    display:block;
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;display:block;
     transform:scale(1.01);
-    transition:transform 1.1s cubic-bezier(.19,1,.22,1);
+    transition:transform 1.4s cubic-bezier(.19,1,.22,1);
     will-change:transform;
     -webkit-user-drag:none;user-select:none;
 }
 .hp-gal-item:hover img{transform:scale(1.06)}
 .hp-gal-item::before{
-    content:"";
-    position:absolute;inset:0;z-index:1;
+    content:"";position:absolute;inset:0;z-index:1;
     background:linear-gradient(to top,rgba(6,10,30,.78) 0%,rgba(6,10,30,.28) 35%,transparent 65%);
-    opacity:.6;transition:opacity .45s ease;pointer-events:none;
+    opacity:.6;transition:opacity .5s cubic-bezier(.4,0,.6,1);pointer-events:none;
 }
 .hp-gal-item:hover::before{opacity:1}
 .hp-gal-item::after{
     content:"";position:absolute;inset:0;z-index:2;
     border-radius:inherit;
     box-shadow:inset 0 0 0 1px rgba(237,194,115,0);
-    transition:box-shadow .45s ease;pointer-events:none;
+    transition:box-shadow .5s cubic-bezier(.4,0,.6,1);pointer-events:none;
 }
 .hp-gal-item:hover::after{box-shadow:inset 0 0 0 1px rgba(237,194,115,.5)}
 
 .hp-gal-meta{
-    position:absolute;
-    left:24px;right:24px;bottom:22px;
+    position:absolute;left:24px;right:24px;bottom:22px;
     z-index:3;color:#fff;
     display:flex;flex-direction:column;gap:6px;
     pointer-events:none;
-    transition:transform .45s cubic-bezier(.19,1,.22,1);
+    transition:transform .5s cubic-bezier(.19,1,.22,1);
 }
 .hp-gal-item:hover .hp-gal-meta{transform:translateY(-3px)}
 @media(max-width:640px){.hp-gal-meta{left:18px;right:18px;bottom:16px}}
@@ -789,7 +702,7 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     border:1px solid rgba(255,255,255,.2);
     -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
     color:#fff;opacity:0;transform:translateY(-6px);
-    transition:opacity .35s ease,transform .35s ease,background-color .3s,color .3s,border-color .3s;
+    transition:opacity .4s cubic-bezier(.19,1,.22,1),transform .4s cubic-bezier(.19,1,.22,1),background-color .3s,color .3s,border-color .3s;
     pointer-events:none;
 }
 .hp-gal-item:hover .hp-gal-icon{
@@ -808,7 +721,7 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     background:rgba(4,7,22,.96);
     -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
 }
-#hp-lightbox.is-open{display:flex;animation:hp-lb .35s cubic-bezier(.2,.7,.2,1)}
+#hp-lightbox.is-open{display:flex;animation:hp-lb .4s cubic-bezier(.2,.7,.2,1)}
 #hp-lightbox figure{max-width:min(1200px,100%);margin:0;text-align:center}
 #hp-lightbox img{
     max-width:100%;max-height:78vh;
@@ -827,7 +740,7 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     color:#fff;
     -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
     cursor:pointer;
-    transition:background-color .25s,color .25s,transform .25s,border-color .25s;
+    transition:background-color .3s,color .3s,transform .3s,border-color .3s;
 }
 .hp-lb-btn:hover{background:#EDC273;color:#12173F;border-color:#EDC273;transform:scale(1.06)}
 @keyframes hp-lb{from{opacity:0}to{opacity:1}}
@@ -835,52 +748,66 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
 /* ============================================================
    KLIEN
    ============================================================ */
+.hp-clients-section{color:#fff;padding:70px 0}
+@media(min-width:1024px){.hp-clients-section{padding:90px 0}}
+.hp-clients-section::before{
+    content:"";position:absolute;top:0;left:10%;right:10%;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(241,196,15,.35),transparent);
+    z-index:4;
+}
+
 .hp-marquee{
     position:relative;overflow-x:auto;overflow-y:hidden;
     padding:18px 0 26px;cursor:grab;
     scrollbar-width:none;-ms-overflow-style:none;
-    -webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);
-    mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);
     scroll-behavior:auto;user-select:none;-webkit-user-select:none;
+    -webkit-mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent);
+    mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent);
 }
 .hp-marquee::-webkit-scrollbar{display:none}
 .hp-marquee.is-dragging{cursor:grabbing}
 .hp-marquee.is-dragging .hp-client{pointer-events:none}
 .hp-marquee-track{display:flex;align-items:center;width:max-content}
+
 .hp-client{
     position:relative;flex:none;
-    width:210px;height:92px;margin-right:16px;
+    width:170px;height:82px;margin-right:16px;
     display:flex;align-items:center;justify-content:center;
-    padding:0 24px;background:#fff;
-    border:1px solid #E3E7F0;border-radius:14px;
+    padding:0 20px;
+    background:rgba(255,255,255,.96);
+    border:1px solid rgba(255,255,255,.9);
+    border-radius:14px;
     cursor:inherit;overflow:hidden;
-    box-shadow:0 12px 26px -20px rgba(19,26,70,.4);
-    transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s,border-color .35s;
+    transition:transform .4s cubic-bezier(.19,1,.22,1),border-color .4s,box-shadow .4s,background-color .4s;
 }
-.hp-client:hover{transform:translateY(-4px);border-color:#C9D1E3;box-shadow:0 18px 30px -22px rgba(19,26,70,.4)}
+.hp-client:hover{
+    transform:translateY(-4px);
+    border-color:#EDC273;
+    background:#fff;
+    box-shadow:0 18px 34px -22px rgba(0,0,0,.75),0 0 22px -4px rgba(241,196,15,.35);
+}
 .hp-client-logo,
 .hp-client-logo.logo-hp,
 .hp-client-logo.logo-indihome{
     width:auto;height:auto;max-height:44px;max-width:132px;
     object-fit:contain;display:block;pointer-events:none;
-    filter:grayscale(1) contrast(1.05);opacity:.72;
-    transition:filter .35s,opacity .35s;
+    filter:none;opacity:1;
+    transition:transform .4s cubic-bezier(.19,1,.22,1);
 }
-.hp-client:hover .hp-client-logo{filter:none;opacity:1}
+.hp-client:hover .hp-client-logo{transform:scale(1.05)}
 .hp-client span{font-family:'Outfit',sans-serif;line-height:1.1;text-align:center;white-space:nowrap}
-.hp-brand-telkom{font-weight:700;font-size:1.2rem;color:#64748b;letter-spacing:-.01em;transition:color .3s}
-.hp-client:hover .hp-brand-telkom{color:#dc2626}
+.hp-brand-telkom{font-weight:700;font-size:1.15rem;color:#dc2626;letter-spacing:-.01em;transition:color .3s}
+.hp-client:hover .hp-brand-telkom{color:#b91c1c}
 @media(max-width:768px){
-    .hp-client{width:164px;height:76px;padding:0 16px}
+    .hp-client{width:142px;height:72px;padding:0 14px;margin-right:12px}
     .hp-client-logo,.hp-client-logo.logo-hp,.hp-client-logo.logo-indihome{max-height:36px;max-width:110px}
 }
 
 /* ============================================================
    KONTAK
    ============================================================ */
-#contact{position:relative;overflow:hidden;color:#fff;padding:70px 0 80px}
+#contact{color:#fff;padding:70px 0 80px}
 @media(min-width:1024px){#contact{padding:90px 0 100px}}
-#contact .hp-wrap{position:relative;z-index:1}
 
 .hp-card{
     position:relative;overflow:hidden;display:block;
@@ -888,7 +815,7 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
     border:1px solid rgba(255,255,255,.08);
     -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-    transition:transform .35s cubic-bezier(.2,.7,.2,1),background-color .35s,border-color .35s,box-shadow .35s;
+    transition:transform .4s cubic-bezier(.19,1,.22,1),background-color .4s,border-color .4s,box-shadow .4s;
 }
 .hp-card:hover{
     transform:translateY(-5px);
@@ -898,14 +825,14 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
 }
 .hp-card::after{
     content:"";position:absolute;inset:0;pointer-events:none;opacity:0;
-    transition:opacity .3s;
+    transition:opacity .4s;
     background:radial-gradient(260px circle at var(--cx,50%) var(--cy,50%),rgba(237,194,115,.16),transparent 65%);
 }
 .hp-card:hover::after{opacity:1}
 .hp-card:not(.hp-card-logo)::before{
     content:"";position:absolute;left:0;top:0;width:100%;height:2px;z-index:1;
     background:linear-gradient(90deg,transparent,#f1c40f,transparent);
-    transform:scaleX(0);transition:transform .5s cubic-bezier(.2,.7,.2,1);
+    transform:scaleX(0);transition:transform .55s cubic-bezier(.19,1,.22,1);
 }
 .hp-card:not(.hp-card-logo):hover::before{transform:scaleX(1)}
 .hp-card-logo{display:flex;align-items:center;justify-content:center;padding:18px}
@@ -918,7 +845,7 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     display:flex;align-items:center;justify-content:center;
     border-radius:12px;
     background:rgba(237,194,115,.14);color:#EDC273;
-    transition:background-color .35s,color .35s,transform .35s,box-shadow .35s;
+    transition:background-color .4s,color .4s,transform .4s,box-shadow .4s;
 }
 .hp-card:hover .hp-card-icon{
     background:#EDC273;color:#12173F;transform:translateY(-2px);
@@ -932,7 +859,7 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     text-decoration:none;overflow-wrap:anywhere;
     background-image:linear-gradient(#EDC273,#EDC273);
     background-size:0 1.5px;background-position:0 100%;background-repeat:no-repeat;
-    transition:background-size .3s ease,color .3s;
+    transition:background-size .35s ease,color .3s;
 }
 .hp-val:hover{color:#EDC273;background-size:100% 1.5px}
 .hp-copy{
@@ -940,13 +867,13 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     display:inline-flex;align-items:center;justify-content:center;
     border-radius:8px;color:rgba(255,255,255,.55);
     opacity:0;position:relative;z-index:2;
-    transition:opacity .2s,background-color .2s,color .2s;
+    transition:opacity .3s,background-color .3s,color .3s;
 }
 .hp-card:hover .hp-copy,.hp-copy:focus-visible{opacity:1}
 .hp-copy:hover{background:rgba(255,255,255,.12);color:#fff}
 @media(hover:none){.hp-copy{opacity:1}}
 @media(max-width:420px){.hp-val{font-size:14px}.hp-card{padding:18px}}
-#contact iframe{filter:grayscale(1) contrast(1.05) brightness(.9);transition:filter .6s}
+#contact iframe{filter:grayscale(1) contrast(1.05) brightness(.9);transition:filter .8s cubic-bezier(.4,0,.6,1)}
 #contact .relative:hover>iframe{filter:none}
 
 #hp-toast{
@@ -967,42 +894,118 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
    ============================================================ */
 .site-footer{
     position:relative;z-index:2;
-    background:#060a10;color:#94a3b8;
-    padding:4rem 0 2rem;
-    border-top:1px solid rgba(255,255,255,.06);
+    background:#080C1F;color:#94a3b8;
+    padding:0 0 2rem;
+    overflow:hidden;isolation:isolate;
 }
 .site-footer::before{
-    content:"";position:absolute;top:-1px;left:0;right:0;height:1px;
-    background:linear-gradient(90deg,transparent,rgba(241,196,15,.5),transparent);
+    content:"";
+    position:absolute;inset:0;
+    background-image:var(--hp-header-url);
+    background-size:cover;background-position:center 40%;
+    filter:blur(75px) saturate(0.4) brightness(0.22);
+    opacity:.55;z-index:-1;
+    transform:translate3d(0,0,0) scale(1.08);
+    animation:hp-footer-drift 80s cubic-bezier(.4,0,.6,1) infinite alternate;
+    will-change:transform;
 }
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1.2fr;gap:3rem;max-width:1100px;margin:0 auto 3rem;padding:0 1rem}
+@keyframes hp-footer-drift{
+    0%   { transform:translate3d(0,0,0) scale(1.08); }
+    100% { transform:translate3d(-1.5%,1%,0) scale(1.14); }
+}
+.site-footer::after{
+    content:"";
+    position:absolute;inset:0;
+    background:
+        linear-gradient(180deg,rgba(6,10,26,.65) 0%,rgba(6,10,26,.85) 40%,rgba(4,7,16,.95) 100%),
+        radial-gradient(ellipse 60% 40% at 50% 0%,rgba(241,196,15,.05),transparent 70%);
+    z-index:-1;pointer-events:none;
+}
+
+.hp-footer-city{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    height:130px;
+    z-index:-1;
+    opacity:.32;
+    pointer-events:none;
+    overflow:hidden;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 55%,#000 100%);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 55%,#000 100%);
+}
+.hp-footer-city .hp-city-track svg{height:220px}
+.hp-footer-city .hp-city-track{bottom:0}
+
+.hp-footer-bar{
+    position:relative;height:1px;width:100%;
+    background:linear-gradient(90deg,transparent 5%,rgba(241,196,15,.5) 50%,transparent 95%);
+}
+.hp-footer-bar::after{
+    content:"";position:absolute;top:-8px;left:50%;
+    width:56px;height:16px;margin-left:-28px;
+    background:radial-gradient(ellipse at center,rgba(241,196,15,.35),transparent 70%);
+    pointer-events:none;
+}
+
+.footer-grid{
+    position:relative;
+    display:grid;grid-template-columns:2fr 1fr 1.2fr;
+    gap:3rem;max-width:1100px;
+    margin:0 auto 3rem;padding:3.5rem 1rem 0;
+}
 .footer-col h4{
-    position:relative;padding-bottom:.6rem;
+    position:relative;padding-bottom:.75rem;
     font-family:'Outfit',sans-serif;color:#fff;
-    font-size:1.1rem;font-weight:700;
-    margin-bottom:1.25rem;letter-spacing:.02em;
+    font-size:1.08rem;font-weight:700;
+    margin-bottom:1.35rem;letter-spacing:.02em;
 }
 .footer-col h4::after{
     content:"";position:absolute;left:0;bottom:0;
-    width:28px;height:2px;background:#f1c40f;border-radius:2px;
+    width:32px;height:2px;
+    background:linear-gradient(90deg,#f1c40f,rgba(241,196,15,.2));
+    border-radius:2px;
 }
-.footer-col p{font-size:.9rem;line-height:1.6;color:#94a3b8;margin-bottom:1rem}
-.footer-contact-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:.75rem;font-size:.9rem;color:#94a3b8}
-.footer-contact-item svg{width:16px;height:16px;color:#f1c40f;flex-shrink:0;margin-top:3px}
-.footer-col a.footer-contact-link{color:#94a3b8;text-decoration:none;transition:color .2s ease}
+.footer-col p{font-size:.9rem;line-height:1.7;color:#94a3b8;margin-bottom:1rem;max-width:44ch}
+.footer-contact-item{
+    display:flex;align-items:flex-start;gap:10px;
+    margin-bottom:.85rem;font-size:.9rem;color:#94a3b8;line-height:1.6;
+}
+.footer-contact-item svg{
+    width:16px;height:16px;color:#f1c40f;flex-shrink:0;margin-top:3px;
+    filter:drop-shadow(0 0 4px rgba(241,196,15,.35));
+}
+.footer-col a.footer-contact-link{color:#94a3b8;text-decoration:none;transition:color .3s ease}
 .footer-col a.footer-contact-link:hover{color:#f1c40f;text-decoration:underline}
 .footer-links{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.75rem}
-.footer-links a{display:inline-block;color:#94a3b8;text-decoration:none;font-size:.9rem;transition:color .2s,transform .25s cubic-bezier(.2,.7,.2,1)}
-.footer-links a:hover{color:#f1c40f;transform:translateX(6px)}
+.footer-links a{
+    position:relative;display:inline-block;
+    color:#94a3b8;text-decoration:none;font-size:.9rem;padding-left:0;
+    transition:color .3s,transform .3s cubic-bezier(.19,1,.22,1),padding-left .3s;
+}
+.footer-links a::before{
+    content:"";position:absolute;left:0;top:50%;
+    width:0;height:1px;background:#f1c40f;
+    transition:width .3s cubic-bezier(.19,1,.22,1);transform:translateY(-50%);
+}
+.footer-links a:hover{color:#f1c40f;padding-left:14px}
+.footer-links a:hover::before{width:8px}
 .footer-bottom{
-    max-width:1100px;margin:0 auto;
+    position:relative;max-width:1100px;margin:0 auto;
     padding:1.5rem 1rem 0;
-    border-top:1px solid rgba(255,255,255,.05);
+    border-top:1px solid rgba(255,255,255,.06);
     display:flex;justify-content:space-between;align-items:center;
     font-size:.85rem;color:#64748b;
 }
+.footer-bottom p:first-child{letter-spacing:.02em}
+.footer-bottom p:last-child{
+    color:#94a3b8;display:inline-flex;align-items:center;gap:8px;
+}
+.footer-bottom p:last-child::before{
+    content:"";width:6px;height:6px;border-radius:50%;
+    background:#f1c40f;box-shadow:0 0 8px rgba(241,196,15,.7);
+}
 @media(max-width:991.98px){
-    .footer-grid{grid-template-columns:1fr;gap:2rem}
+    .footer-grid{grid-template-columns:1fr;gap:2rem;padding-top:2.5rem}
     .footer-bottom{flex-direction:column;text-align:center;gap:.5rem}
 }
 
@@ -1017,9 +1020,9 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     .hp-client[aria-hidden="true"]{display:none}
     html{scroll-behavior:auto}
     .hp-stars::before,.hp-stars::after{animation:none;opacity:.6}
-    .hp-rk-v,.hp-shoot,.hp-dust{display:none}
-    .hp-grid-bg{animation:none}
-    .hp-nebula{animation:none}
+    .hp-shoot,.hp-dust{display:none}
+    .hp-grid-bg,.hp-nebula,.hp-space-bg::before,.site-footer::before{animation:none}
+    .hp-city-track,.hp-city .win,.hp-city .antenna-light,.hp-crane .arm,.hp-crane .hook{animation:none}
 }
 
 /* ============================================================
@@ -1055,61 +1058,209 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     transform:translate(8px,-50%);opacity:0;pointer-events:none;
     white-space:nowrap;padding:5px 11px;border-radius:8px;
     background:#12173F;color:#fff;font-size:12px;font-weight:600;
-    transition:opacity .25s,transform .25s;
+    transition:opacity .3s,transform .3s;
 }
 #hp-side a:hover span,#hp-side a:focus-visible span{opacity:1;transform:translate(0,-50%)}
 </style>
 
-<div class="hp" id="hp">
-<script>document.getElementById('hp').classList.add('hp-js');</script>
+<style>:root{--hp-header-url:url('{{ asset("images/header.png") }}');}</style>
 
-{{-- SVG defs global --}}
+{{-- ============================================================
+     SVG TEMPLATE GLOBAL — Skyline & Crane (didefinisikan sekali)
+     ============================================================ --}}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <defs>
-        <linearGradient id="rkBody" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0"    stop-color="#94A3B8"/>
-            <stop offset="0.15" stop-color="#F8FAFC"/>
-            <stop offset="0.5"  stop-color="#E2E8F0"/>
-            <stop offset="0.85" stop-color="#94A3B8"/>
-            <stop offset="1"    stop-color="#64748B"/>
-        </linearGradient>
-        <linearGradient id="rkBodyDim" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0"    stop-color="#64748B"/>
-            <stop offset="0.15" stop-color="#E2E8F0"/>
-            <stop offset="0.5"  stop-color="#CBD5E1"/>
-            <stop offset="0.85" stop-color="#64748B"/>
-            <stop offset="1"    stop-color="#334155"/>
-        </linearGradient>
-        <linearGradient id="rkNose" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0"   stop-color="#CBD5E1"/>
-            <stop offset="0.2" stop-color="#FFFFFF"/>
-            <stop offset="0.5" stop-color="#E2E8F0"/>
-            <stop offset="0.8" stop-color="#94A3B8"/>
-            <stop offset="1"   stop-color="#475569"/>
-        </linearGradient>
-        <linearGradient id="rkNoseDim" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0"   stop-color="#94A3B8"/>
-            <stop offset="0.2" stop-color="#F8FAFC"/>
-            <stop offset="0.5" stop-color="#CBD5E1"/>
-            <stop offset="0.8" stop-color="#64748B"/>
-            <stop offset="1"   stop-color="#334155"/>
-        </linearGradient>
-        <linearGradient id="rkNozzle" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#64748B"/>
-            <stop offset="0.5" stop-color="#334155"/>
-            <stop offset="1" stop-color="#1E293B"/>
-        </linearGradient>
-        <radialGradient id="rkPort" cx="0.35" cy="0.3" r="0.75">
-            <stop offset="0" stop-color="#7DD3FC"/>
-            <stop offset="0.5" stop-color="#1E40AF"/>
-            <stop offset="1" stop-color="#0B1226"/>
-        </radialGradient>
-        <linearGradient id="rkFlameHot" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.1"/>
-            <stop offset="1" stop-color="#FFFFFF"/>
-        </linearGradient>
+        <!-- Pattern jendela gedung — jauh lebih efisien dari ratusan rect -->
+        <pattern id="hp-win-gold" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
+            <rect x="5" y="5" width="5" height="5" fill="#F1C40F" opacity=".85"/>
+        </pattern>
+        <pattern id="hp-win-slate" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
+            <rect x="5" y="5" width="5" height="5" fill="#94A3B8" opacity=".6"/>
+        </pattern>
+        <pattern id="hp-win-mixed" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+            <rect x="4" y="4" width="5" height="5" fill="#F1C40F" opacity=".9"/>
+            <rect x="15" y="15" width="4" height="4" fill="#94A3B8" opacity=".55"/>
+        </pattern>
+
+        <!-- SKYLINE BELAKANG — silhouette sederhana -->
+        <g id="hp-skyline-back">
+            <path fill="#1E2A55" d="
+                M0 220 L0 150 L40 150 L40 130 L80 130 L80 150 L120 150 L120 110 L160 110 L160 150 L200 150 L200 90 L240 90 L240 150 L290 150 L290 120 L340 120 L340 150 L380 150 L380 100 L420 100 L420 150 L470 150 L470 130 L510 130 L510 150 L560 150 L560 80 L600 80 L600 150 L640 150 L640 120 L690 120 L690 150 L730 150 L730 90 L780 90 L780 150 L820 150 L820 110 L870 110 L870 150 L910 150 L910 130 L960 130 L960 150 L1000 150 L1000 100 L1040 100 L1040 150 L1090 150 L1090 130 L1140 130 L1140 150 L1180 150 L1180 80 L1230 80 L1230 150 L1280 150 L1280 110 L1330 110 L1330 150 L1380 150 L1380 130 L1420 130 L1420 150 L1460 150 L1460 90 L1500 90 L1500 150 L1540 150 L1540 120 L1580 120 L1580 150 L1630 150 L1630 100 L1680 100 L1680 150 L1720 150 L1720 130 L1760 130 L1760 150 L1810 150 L1810 90 L1860 90 L1860 150 L1900 150 L1900 110 L1950 110 L1950 150 L1990 150 L1990 130 L2040 130 L2040 150 L2080 150 L2080 100 L2130 100 L2130 150 L2170 150 L2170 120 L2220 120 L2220 150 L2260 150 L2260 90 L2300 90 L2300 150 L2350 150 L2350 130 L2400 130 L2400 150 L2400 220 Z
+            "/>
+        </g>
+
+        <!-- SKYLINE DEPAN — detail dengan pattern jendela -->
+        <g id="hp-skyline-front">
+            <!-- Gedung 1 -->
+            <rect x="0" y="120" width="60" height="100" fill="#243268"/>
+            <rect x="0" y="120" width="60" height="100" fill="url(#hp-win-slate)"/>
+
+            <!-- Gedung 2 (tinggi) -->
+            <rect x="80" y="60" width="70" height="160" fill="#2A386E"/>
+            <rect x="80" y="60" width="70" height="160" fill="url(#hp-win-gold)"/>
+
+            <!-- Gedung 3 -->
+            <rect x="170" y="100" width="50" height="120" fill="#243268"/>
+            <rect x="170" y="100" width="50" height="120" fill="url(#hp-win-mixed)"/>
+
+            <!-- Gedung 4 (menara dengan antenna) -->
+            <rect x="240" y="40" width="80" height="180" fill="#2A386E"/>
+            <polygon points="240,40 280,10 320,40" fill="#2A386E"/>
+            <line x1="280" y1="10" x2="280" y2="0" stroke="#F1C40F" stroke-width="2"/>
+            <circle class="antenna-light" cx="280" cy="4" r="3" fill="#F1C40F"/>
+            <rect x="240" y="40" width="80" height="180" fill="url(#hp-win-gold)"/>
+
+            <!-- Gedung 5 -->
+            <rect x="340" y="90" width="70" height="130" fill="#243268"/>
+            <rect x="340" y="90" width="70" height="130" fill="url(#hp-win-mixed)"/>
+
+            <!-- Gedung 6 -->
+            <rect x="430" y="130" width="60" height="90" fill="#2A386E"/>
+            <rect x="430" y="130" width="60" height="90" fill="url(#hp-win-slate)"/>
+
+            <!-- Gedung 7 (menara 2) -->
+            <rect x="510" y="50" width="90" height="170" fill="#2A386E"/>
+            <polygon points="510,50 555,20 600,50" fill="#2A386E"/>
+            <line x1="555" y1="20" x2="555" y2="10" stroke="#F1C40F" stroke-width="2"/>
+            <circle class="antenna-light" cx="555" cy="14" r="3" fill="#F1C40F"/>
+            <rect x="510" y="50" width="90" height="170" fill="url(#hp-win-gold)"/>
+
+            <!-- Gedung 8 -->
+            <rect x="620" y="110" width="70" height="110" fill="#243268"/>
+            <rect x="620" y="110" width="70" height="110" fill="url(#hp-win-mixed)"/>
+
+            <!-- Gedung 9 (menara 3) -->
+            <rect x="710" y="70" width="80" height="150" fill="#2A386E"/>
+            <rect x="740" y="40" width="20" height="30" fill="#243268"/>
+            <line x1="750" y1="40" x2="750" y2="25" stroke="#F1C40F" stroke-width="2"/>
+            <circle class="antenna-light" cx="750" cy="28" r="3" fill="#F1C40F"/>
+            <rect x="710" y="70" width="80" height="150" fill="url(#hp-win-gold)"/>
+
+            <!-- Gedung 10 -->
+            <rect x="800" y="100" width="60" height="120" fill="#243268"/>
+            <rect x="800" y="100" width="60" height="120" fill="url(#hp-win-slate)"/>
+
+            <!-- Gedung 11 (menara 4) -->
+            <rect x="870" y="30" width="100" height="190" fill="#2A386E"/>
+            <polygon points="870,30 920,0 970,30" fill="#2A386E"/>
+            <line x1="920" y1="0" x2="920" y2="-10" stroke="#F1C40F" stroke-width="2"/>
+            <circle class="antenna-light" cx="920" cy="-6" r="3" fill="#F1C40F"/>
+            <rect x="870" y="30" width="100" height="190" fill="url(#hp-win-gold)"/>
+
+            <!-- Gedung 12 -->
+            <rect x="990" y="130" width="60" height="90" fill="#243268"/>
+            <rect x="990" y="130" width="60" height="90" fill="url(#hp-win-mixed)"/>
+
+            <!-- Gedung 13 (menara 5) -->
+            <rect x="1070" y="60" width="80" height="160" fill="#2A386E"/>
+            <rect x="1100" y="30" width="20" height="30" fill="#243268"/>
+            <line x1="1110" y1="30" x2="1110" y2="15" stroke="#F1C40F" stroke-width="2"/>
+            <circle class="antenna-light" cx="1110" cy="18" r="3" fill="#F1C40F"/>
+            <rect x="1070" y="60" width="80" height="160" fill="url(#hp-win-gold)"/>
+
+            <!-- Gedung 14 -->
+            <rect x="1170" y="110" width="60" height="110" fill="#243268"/>
+            <rect x="1170" y="110" width="60" height="110" fill="url(#hp-win-slate)"/>
+
+            <!-- Gedung 15 (menara 6) -->
+            <rect x="1250" y="40" width="90" height="180" fill="#2A386E"/>
+            <polygon points="1250,40 1295,10 1340,40" fill="#2A386E"/>
+            <line x1="1295" y1="10" x2="1295" y2="0" stroke="#F1C40F" stroke-width="2"/>
+            <circle class="antenna-light" cx="1295" cy="4" r="3" fill="#F1C40F"/>
+            <rect x="1250" y="40" width="90" height="180" fill="url(#hp-win-gold)"/>
+
+            <!-- Gedung 16 -->
+            <rect x="1360" y="120" width="70" height="100" fill="#243268"/>
+            <rect x="1360" y="120" width="70" height="100" fill="url(#hp-win-mixed)"/>
+
+            <!-- Gedung 17 (menara 7) -->
+            <rect x="1450" y="70" width="80" height="150" fill="#2A386E"/>
+            <polygon points="1450,70 1490,45 1530,70" fill="#2A386E"/>
+            <line x1="1490" y1="45" x2="1490" y2="35" stroke="#F1C40F" stroke-width="2"/>
+            <circle class="antenna-light" cx="1490" cy="38" r="3" fill="#F1C40F"/>
+            <rect x="1450" y="70" width="80" height="150" fill="url(#hp-win-gold)"/>
+
+            <!-- Gedung 18 -->
+            <rect x="1550" y="100" width="60" height="120" fill="#243268"/>
+            <rect x="1550" y="100" width="60" height="120" fill="url(#hp-win-slate)"/>
+
+            <!-- Gedung 19 -->
+            <rect x="1630" y="90" width="70" height="130" fill="#2A386E"/>
+            <rect x="1630" y="90" width="70" height="130" fill="url(#hp-win-mixed)"/>
+
+            <!-- Gedung 20 -->
+            <rect x="1720" y="130" width="60" height="90" fill="#243268"/>
+            <rect x="1720" y="130" width="60" height="90" fill="url(#hp-win-slate)"/>
+
+            <!-- Gedung 21 (menara 8) -->
+            <rect x="1800" y="50" width="90" height="170" fill="#2A386E"/>
+            <polygon points="1800,50 1845,20 1890,50" fill="#2A386E"/>
+            <line x1="1845" y1="20" x2="1845" y2="10" stroke="#F1C40F" stroke-width="2"/>
+            <circle class="antenna-light" cx="1845" cy="14" r="3" fill="#F1C40F"/>
+            <rect x="1800" y="50" width="90" height="170" fill="url(#hp-win-gold)"/>
+
+            <!-- Gedung 22 -->
+            <rect x="1910" y="110" width="60" height="110" fill="#243268"/>
+            <rect x="1910" y="110" width="60" height="110" fill="url(#hp-win-mixed)"/>
+
+            <!-- Gedung 23 -->
+            <rect x="1990" y="90" width="80" height="130" fill="#2A386E"/>
+            <rect x="1990" y="90" width="80" height="130" fill="url(#hp-win-gold)"/>
+
+            <!-- Gedung 24 -->
+            <rect x="2090" y="120" width="70" height="100" fill="#243268"/>
+            <rect x="2090" y="120" width="70" height="100" fill="url(#hp-win-slate)"/>
+
+            <!-- Gedung 25 -->
+            <rect x="2180" y="70" width="80" height="150" fill="#2A386E"/>
+            <rect x="2180" y="70" width="80" height="150" fill="url(#hp-win-gold)"/>
+
+            <!-- Gedung 26 -->
+            <rect x="2280" y="110" width="60" height="110" fill="#243268"/>
+            <rect x="2280" y="110" width="60" height="110" fill="url(#hp-win-mixed)"/>
+
+            <!-- Gedung 27 -->
+            <rect x="2360" y="130" width="40" height="90" fill="#243268"/>
+            <rect x="2360" y="130" width="40" height="90" fill="url(#hp-win-slate)"/>
+        </g>
+
+        <!-- CRANE (tower crane) -->
+        <g id="hp-crane">
+            <!-- Base -->
+            <rect x="30" y="160" width="40" height="40" fill="#243268"/>
+            <rect x="40" y="160" width="20" height="40" fill="#2A386E"/>
+            <!-- Tower vertical -->
+            <line x1="50" y1="160" x2="50" y2="40" stroke="#F1C40F" stroke-width="2" opacity="0.7"/>
+            <line x1="45" y1="160" x2="45" y2="40" stroke="#F1C40F" stroke-width="1" opacity="0.5"/>
+            <line x1="55" y1="160" x2="55" y2="40" stroke="#F1C40F" stroke-width="1" opacity="0.5"/>
+            <!-- X-braces -->
+            <g stroke="#F1C40F" stroke-width="0.8" opacity="0.55" fill="none">
+                <path d="M45 140 L55 120 M55 140 L45 120"/>
+                <path d="M45 120 L55 100 M55 120 L45 100"/>
+                <path d="M45 100 L55 80 M55 100 L45 80"/>
+                <path d="M45 80 L55 60 M55 80 L45 60"/>
+                <path d="M45 60 L55 40 M55 60 L45 40"/>
+            </g>
+            <!-- Arm horizontal (bergoyang) -->
+            <g class="arm">
+                <line x1="50" y1="40" x2="150" y2="40" stroke="#F1C40F" stroke-width="2.5"/>
+                <line x1="50" y1="40" x2="10" y2="40" stroke="#F1C40F" stroke-width="1.5" opacity="0.6"/>
+                <!-- Hook cable + kait -->
+                <g class="hook">
+                    <line x1="130" y1="40" x2="130" y2="90" stroke="#94A3B8" stroke-width="1"/>
+                    <rect x="126" y="90" width="8" height="8" fill="#94A3B8"/>
+                </g>
+                <!-- Counterweight -->
+                <rect x="15" y="36" width="20" height="8" fill="#243268" stroke="#F1C40F" stroke-width="0.5"/>
+                <!-- Cabin -->
+                <rect x="44" y="34" width="14" height="10" fill="#243268" stroke="#F1C40F" stroke-width="0.8"/>
+            </g>
+        </g>
     </defs>
 </svg>
+
+<div class="hp" id="hp">
+<script>document.getElementById('hp').classList.add('hp-js');</script>
 
 {{-- ============================================================
      HERO
@@ -1154,9 +1305,25 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
      TENTANG KAMI
      ============================================================ --}}
 <section id="hp-about" class="hp-about-section">
-    <div class="hp-stars" aria-hidden="true"></div>
+    <div class="hp-space-bg" aria-hidden="true"></div>
     <div class="hp-nebula" aria-hidden="true"></div>
+    <div class="hp-stars" aria-hidden="true"></div>
     <div class="hp-grid-bg" aria-hidden="true"></div>
+
+    {{-- Skyline seamless --}}
+    <div class="hp-city" aria-hidden="true">
+        <div class="hp-city-track hp-city-track-back">
+            <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-back"/></svg>
+            <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-back"/></svg>
+        </div>
+        <div class="hp-city-track hp-city-track-front">
+            <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-front"/></svg>
+            <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-front"/></svg>
+        </div>
+    </div>
+    <svg class="hp-crane left" viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg">
+        <use href="#hp-crane"/>
+    </svg>
 
     <div class="hp-dust" aria-hidden="true">
         @for($i = 0; $i < 18; $i++)
@@ -1166,15 +1333,12 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
 
     <div class="hp-wrap">
         <div class="hp-about-grid">
-
-            <!-- Kolom Logo / Gambar -->
             <div class="hp-about-image-card">
                 <div class="hp-about-logo-container">
                     <img src="{{ asset('images/logo2.png') }}" alt="Logo PT Bachri" class="hp-about-img">
                 </div>
             </div>
 
-            <!-- Kolom Konten Teks -->
             <div class="hp-about-content">
                 <div class="hp-about-head">
                     <div class="hp-section-eyebrow">Tentang Kami</div>
@@ -1204,7 +1368,6 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
@@ -1223,10 +1386,25 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     $total = count($gallery);
 @endphp
 
-<section id="galeri" class="hp-gal relative overflow-hidden" aria-label="Galeri karya">
-    <div class="hp-stars" aria-hidden="true"></div>
+<section id="galeri" class="hp-gal">
+    <div class="hp-space-bg" aria-hidden="true"></div>
     <div class="hp-nebula" aria-hidden="true"></div>
+    <div class="hp-stars" aria-hidden="true"></div>
     <div class="hp-grid-bg" aria-hidden="true"></div>
+
+    <div class="hp-city" aria-hidden="true">
+        <div class="hp-city-track hp-city-track-back">
+            <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-back"/></svg>
+            <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-back"/></svg>
+        </div>
+        <div class="hp-city-track hp-city-track-front">
+            <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-front"/></svg>
+            <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-front"/></svg>
+        </div>
+    </div>
+    <svg class="hp-crane right" viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg">
+        <use href="#hp-crane"/>
+    </svg>
 
     <div class="hp-shoot hp-shoot-1" aria-hidden="true"></div>
     <div class="hp-shoot hp-shoot-2" aria-hidden="true"></div>
@@ -1234,7 +1412,6 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     <div class="hp-shoot hp-shoot-4" aria-hidden="true"></div>
 
     <div class="hp-wrap relative">
-
         <div class="hp-gal-top hp-rv">
             <div class="hp-gal-head">
                 <span class="hp-gal-eyebrow">Portofolio</span>
@@ -1282,7 +1459,7 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
 </section>
 
 {{-- ============================================================
-     KLIEN KAMI (DARK SPACE FULL-WIDTH MARQUEE)
+     KLIEN KAMI
      ============================================================ --}}
 @php
     $clients = [
@@ -1297,62 +1474,52 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     ];
 @endphp
 
-<section class="hp-light relative overflow-hidden bg-[#080D2C] py-[60px] lg:py-[80px]" aria-label="Klien kami">
-    <!-- Elemen Background Luar Angkasa -->
-    <div class="hp-stars" aria-hidden="true"></div>
+<section class="hp-clients-section" aria-label="Klien kami">
+    <div class="hp-space-bg" aria-hidden="true"></div>
     <div class="hp-nebula" aria-hidden="true"></div>
-    <div class="hp-grid-bg" aria-hidden="true"></div>
+    <div class="hp-stars" aria-hidden="true"></div>
 
-    <!-- Garis Pemisah Halus di Atas -->
-    <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#C9932C]/30 to-transparent"></div>
-
-    <!-- Bagian Judul (Ramping & Terpusat) -->
-    <div class="relative max-w-[700px] mx-auto px-4 sm:px-6 text-center mb-[35px] lg:mb-[45px]">
+    <div class="relative max-w-[720px] mx-auto px-4 sm:px-6 text-center mb-[36px] lg:mb-[44px]" style="position:relative;z-index:3">
         <div class="hp-rv">
-            <div class="mb-2.5 flex items-center justify-center gap-2.5">
-                <span class="h-[1.5px] w-8 bg-gradient-to-r from-transparent to-[#F1C40F]"></span>
-                <span class="whitespace-nowrap text-[11px] font-bold uppercase tracking-[0.25em] text-[#F1C40F]">
-                    Klien & Mitra Kami
+            <div class="mb-3 flex items-center justify-center gap-3">
+                <span class="h-[1px] w-8 bg-gradient-to-r from-transparent to-[#F1C40F]"></span>
+                <span class="whitespace-nowrap text-[11px] font-bold uppercase tracking-[0.28em] text-[#F1C40F]">
+                    Klien &amp; Mitra Kami
                 </span>
-                <span class="h-[1.5px] w-8 bg-gradient-to-l from-transparent to-[#F1C40F]"></span>
+                <span class="h-[1px] w-8 bg-gradient-to-l from-transparent to-[#F1C40F]"></span>
             </div>
-            
-            <h2 class="text-[clamp(22px,2.8vw,34px)] leading-[1.2] font-bold tracking-tight text-white">
+
+            <h2 class="text-[clamp(24px,3vw,36px)] leading-[1.2] font-bold tracking-tight text-white">
                 Brand-Brand <span class="text-[#F1C40F]">Terbaik</span> Indonesia
             </h2>
-            
-            <p class="mt-2 text-[12px] text-slate-300">
+
+            <p class="mt-3 text-[12.5px] text-slate-400">
                 ← Geser untuk melihat lebih banyak →
             </p>
         </div>
     </div>
 
-    <!-- Area Marquee (Full-Width / Membentang Penuh ke Ujung Kiri & Kanan) -->
-    <div class="relative w-full overflow-hidden py-3" style="-webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent); mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);">
+    <div class="relative w-full overflow-hidden" style="position:relative;z-index:3">
         <div class="hp-marquee hp-rv" id="hp-marquee" style="--d:.1s">
-            <div class="hp-marquee-track flex items-center" id="hp-marquee-track">
+            <div class="hp-marquee-track" id="hp-marquee-track">
                 @foreach ([0, 1] as $set)
                     @foreach ($clients as $client)
-                        <!-- Kartu Klien dengan Tema Gelap Semi-Transparan -->
-                        <div class="hp-client flex-shrink-0 mx-2.5 w-[140px] h-[70px] lg:w-[160px] lg:h-[75px] bg-slate-900/60 backdrop-blur-md rounded-xl shadow-[0_4px_15px_-4px_rgba(0,0,0,0.3)] border border-slate-800 flex items-center justify-center p-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_25px_-5px_rgba(241,196,15,0.2)] hover:border-[#F1C40F]/50 group" @if ($set === 1) aria-hidden="true" @endif>
-                            
+                        <div class="hp-client" @if ($set === 1) aria-hidden="true" @endif>
                             @if (!empty($client['img']))
                                 <img src="{{ asset('images/' . $client['img']) }}"
                                      alt="{{ $client['text'] }}"
-                                     class="max-w-full max-h-full object-contain filter brightness-90 contrast-125 transition-transform duration-300 group-hover:scale-105 group-hover:brightness-100 {{ $client['logoCls'] ?? '' }}"
+                                     class="hp-client-logo {{ $client['logoCls'] ?? '' }}"
                                      loading="lazy"
                                      draggable="false">
                             @else
-                                <span class="{{ $client['cls'] ?? '' }} font-semibold text-slate-300 text-center text-[12px] leading-snug group-hover:text-[#F1C40F] transition-colors">{!! $client['text'] !!}</span>
+                                <span class="{{ $client['cls'] ?? '' }}">{!! $client['text'] !!}</span>
                             @endif
-                            
                         </div>
                     @endforeach
                 @endforeach
             </div>
         </div>
     </div>
-    
 </section>
 
 {{-- ============================================================
@@ -1366,10 +1533,24 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     $copyIcon = '<rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>';
 @endphp
 
-<section id="contact" class="relative overflow-hidden py-[70px] lg:py-[100px]" aria-label="Kontak kami">
-    <!-- Elemen Background Luar Angkasa -->
-    <div class="hp-stars" aria-hidden="true"></div>
+<section id="contact">
+    <div class="hp-space-bg" aria-hidden="true"></div>
     <div class="hp-nebula" aria-hidden="true"></div>
+    <div class="hp-stars" aria-hidden="true"></div>
+
+    <div class="hp-city" aria-hidden="true">
+        <div class="hp-city-track hp-city-track-back">
+            <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-back"/></svg>
+            <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-back"/></svg>
+        </div>
+        <div class="hp-city-track hp-city-track-front">
+            <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-front"/></svg>
+            <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-front"/></svg>
+        </div>
+    </div>
+    <svg class="hp-crane left" viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg">
+        <use href="#hp-crane"/>
+    </svg>
 
     <div class="hp-shoot hp-shoot-2" aria-hidden="true"></div>
     <div class="hp-shoot hp-shoot-3" aria-hidden="true"></div>
@@ -1377,12 +1558,10 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
     <div class="hp-wrap relative">
         <div class="grid gap-[18px] sm:grid-cols-2 xl:grid-cols-[minmax(0,.95fr)_minmax(0,.9fr)_minmax(0,1.45fr)_minmax(0,1.05fr)]">
 
-            <!-- Card Logo -->
-            <div class="hp-card hp-card-logo hp-rv sm:col-span-2 xl:col-span-1 flex items-center justify-center p-6" style="--d:0s">
-                <img src="{{ asset('images/logo2.png') }}" alt="PT Bachri Samudera Indonesia" class="max-h-[60px] w-auto object-contain">
+            <div class="hp-card hp-card-logo hp-rv sm:col-span-2 xl:col-span-1" style="--d:0s">
+                <img src="{{ asset('images/logo2.png') }}" alt="PT Bachri Samudera Indonesia">
             </div>
 
-            <!-- Card Telepon -->
             <div class="hp-card hp-rv" style="--d:.1s">
                 <div class="hp-card-head">
                     <span class="hp-card-icon" aria-hidden="true">
@@ -1390,11 +1569,11 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
                     </span>
                     <p class="hp-card-label">Telepon</p>
                 </div>
-                <div class="min-w-0 space-y-2 mt-2">
+                <div class="min-w-0">
                     @foreach ($phones as $phone)
-                        <div class="hp-row flex items-center justify-between gap-2">
-                            <a href="tel:+62{{ ltrim(preg_replace('/\D/', '', $phone), '0') }}" class="hp-val hover:text-[#EDC273] transition-colors">{{ $phone }}</a>
-                            <button type="button" class="hp-copy p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 transition-colors" data-hp-copy="{{ $phone }}" aria-label="Salin {{ $phone }}">
+                        <div class="hp-row">
+                            <a href="tel:+62{{ ltrim(preg_replace('/\D/', '', $phone), '0') }}" class="hp-val">{{ $phone }}</a>
+                            <button type="button" class="hp-copy" data-hp-copy="{{ $phone }}" aria-label="Salin {{ $phone }}">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{!! $copyIcon !!}</svg>
                             </button>
                         </div>
@@ -1402,7 +1581,6 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
                 </div>
             </div>
 
-            <!-- Card Email -->
             <div class="hp-card hp-rv" style="--d:.2s">
                 <div class="hp-card-head">
                     <span class="hp-card-icon" aria-hidden="true">
@@ -1410,17 +1588,16 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
                     </span>
                     <p class="hp-card-label">Email</p>
                 </div>
-                <div class="min-w-0 mt-2">
-                    <div class="hp-row flex items-center justify-between gap-2">
-                        <a href="mailto:{{ $email }}" class="hp-val break-all hover:text-[#EDC273] transition-colors">{!! str_replace('@', '<wbr>@', e($email)) !!}</a>
-                        <button type="button" class="hp-copy p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 transition-colors flex-shrink-0" data-hp-copy="{{ $email }}" aria-label="Salin email">
+                <div class="min-w-0">
+                    <div class="hp-row">
+                        <a href="mailto:{{ $email }}" class="hp-val">{!! str_replace('@', '<wbr>@', e($email)) !!}</a>
+                        <button type="button" class="hp-copy" data-hp-copy="{{ $email }}" aria-label="Salin email">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{!! $copyIcon !!}</svg>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Card Alamat -->
             <div class="hp-card hp-rv sm:col-span-2 xl:col-span-1" style="--d:.3s">
                 <div class="hp-card-head">
                     <span class="hp-card-icon" aria-hidden="true">
@@ -1428,10 +1605,10 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
                     </span>
                     <p class="hp-card-label">Alamat</p>
                 </div>
-                <div class="min-w-0 mt-2">
-                    <div class="hp-row items-start flex justify-between gap-2">
-                        <a href="{{ $mapsUrl }}" target="_blank" rel="noopener" class="hp-val hover:text-[#EDC273] transition-colors leading-relaxed">{{ $address }}</a>
-                        <button type="button" class="hp-copy p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 transition-colors flex-shrink-0 mt-[2px]" data-hp-copy="{{ $address }}" aria-label="Salin alamat">
+                <div class="min-w-0">
+                    <div class="hp-row items-start">
+                        <a href="{{ $mapsUrl }}" target="_blank" rel="noopener" class="hp-val">{{ $address }}</a>
+                        <button type="button" class="hp-copy mt-[2px]" data-hp-copy="{{ $address }}" aria-label="Salin alamat">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{!! $copyIcon !!}</svg>
                         </button>
                     </div>
@@ -1439,37 +1616,46 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
             </div>
         </div>
 
-       <!-- Bagian Google Maps & Lokasi -->
         <div class="hp-rv mt-[44px]" style="--d:.1s">
             <div class="flex items-center gap-4 mb-[20px]">
                 <span class="h-px flex-1 bg-gradient-to-r from-transparent via-[#EDC273]/50 to-[#EDC273]"></span>
                 <h3 class="text-[13px] leading-[16px] font-semibold uppercase tracking-[0.25em] text-[#EDC273]">Lokasi Kami</h3>
                 <span class="h-px flex-1 bg-gradient-to-l from-transparent via-[#EDC273]/50 to-[#EDC273]"></span>
             </div>
-            
+
             <div class="relative h-[320px] sm:h-[400px] rounded-[24px] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-[#0B1226] group">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.8999!2d106.7385!3d-6.3488!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sPamulang%2C+Tangerang+Selatan!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
-                        class="block w-full h-full border-0 transition-all duration-500 filter contrast-[1.1] saturate-[0.8] group-hover:saturate-100"
+                        class="block w-full h-full border-0 filter contrast-[1.1] saturate-[0.8] group-hover:saturate-100"
                         allowfullscreen=""
                         loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"
                         title="Lokasi PT Bachri Samudera Indonesia"></iframe>
-                
-                <!-- Tombol Buka Maps yang Lebih Rapi & Estetik -->
+
                 <div class="absolute bottom-4 left-4 z-10">
                     <a href="{{ $mapsUrl }}" target="_blank" rel="noopener"
-                       class="inline-flex items-center gap-2.5 h-[42px] px-[18px] rounded-xl bg-[#0F172A]/90 backdrop-blur-md text-white text-[13px] font-medium border border-white/15 shadow-xl transition-all duration-300 hover:bg-[#EDC273] hover:text-[#0B1226] hover:border-[#EDC273] hover:-translate-y-0.5">
+                       class="inline-flex items-center gap-2.5 h-[42px] px-[18px] rounded-xl bg-[#0F172A]/90 backdrop-blur-md text-white text-[13px] font-medium border border-white/15 shadow-xl transition-all duration-500 hover:bg-[#EDC273] hover:text-[#0B1226] hover:border-[#EDC273] hover:-translate-y-0.5">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
                         Buka di Google Maps
                     </a>
                 </div>
             </div>
         </div>
+    </div>
+</section>
 
 {{-- ============================================================
      FOOTER
      ============================================================ --}}
 <footer class="site-footer">
+    <div class="hp-footer-city" aria-hidden="true">
+        <div class="hp-city-track hp-city-track-front">
+            <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-front"/></svg>
+            <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-front"/></svg>
+        </div>
+    </div>
+
+    <div class="hp-footer-bar" aria-hidden="true"></div>
+
     <div class="footer-grid">
         <div class="footer-col">
             <h4>PT Bachri Samudera Indonesia</h4>
@@ -1482,6 +1668,7 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
                 <li><a href="{{ url('/about') }}">Tentang Kami</a></li>
                 <li><a href="{{ url('/services') }}">Layanan</a></li>
                 <li><a href="{{ url('/contact') }}">Hubungi Kami</a></li>
+                <li><a href="{{ route('careers.index') }}">Karir</a></li>
             </ul>
         </div>
         <div class="footer-col">
@@ -1856,6 +2043,3 @@ body::-webkit-scrollbar-thumb{background:linear-gradient(#f1c40f,#A67C10);border
 </script>
 
 @endsection
-
-
---masih kurang pada bagian bg kurang nyambung dan masih belang, footer masih ingin di sesuaikan agar baik. dan ingin bg ada animasi yang berkaitan dengan foto header

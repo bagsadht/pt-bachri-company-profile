@@ -320,14 +320,135 @@
         .career-toolbar { flex-direction: column; align-items: flex-start; }
         .job-grid { grid-template-columns: 1fr; }
     }
+
+    FOOTER
+   ============================================================ */
+.site-footer{
+    position:relative;z-index:2;
+    background:#080C1F;color:#94a3b8;
+    padding:0 0 2rem;
+    overflow:hidden;isolation:isolate;
+}
+.site-footer::before{
+    content:"";
+    position:absolute;inset:0;
+    background-image:var(--hp-header-url);
+    background-size:cover;background-position:center 40%;
+    filter:blur(75px) saturate(0.4) brightness(0.22);
+    opacity:.55;z-index:-1;
+    transform:translate3d(0,0,0) scale(1.08);
+    animation:hp-footer-drift 80s cubic-bezier(.4,0,.6,1) infinite alternate;
+    will-change:transform;
+}
+@keyframes hp-footer-drift{
+    0%   { transform:translate3d(0,0,0) scale(1.08); }
+    100% { transform:translate3d(-1.5%,1%,0) scale(1.14); }
+}
+.site-footer::after{
+    content:"";
+    position:absolute;inset:0;
+    background:
+        linear-gradient(180deg,rgba(6,10,26,.65) 0%,rgba(6,10,26,.85) 40%,rgba(4,7,16,.95) 100%),
+        radial-gradient(ellipse 60% 40% at 50% 0%,rgba(241,196,15,.05),transparent 70%);
+    z-index:-1;pointer-events:none;
+}
+
+.hp-footer-city{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    height:130px;
+    z-index:-1;
+    opacity:.32;
+    pointer-events:none;
+    overflow:hidden;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 55%,#000 100%);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 55%,#000 100%);
+}
+.hp-footer-city .hp-city-track svg{height:220px}
+.hp-footer-city .hp-city-track{bottom:0}
+
+.hp-footer-bar{
+    position:relative;height:1px;width:100%;
+    background:linear-gradient(90deg,transparent 5%,rgba(241,196,15,.5) 50%,transparent 95%);
+}
+.hp-footer-bar::after{
+    content:"";position:absolute;top:-8px;left:50%;
+    width:56px;height:16px;margin-left:-28px;
+    background:radial-gradient(ellipse at center,rgba(241,196,15,.35),transparent 70%);
+    pointer-events:none;
+}
+
+.footer-grid{
+    position:relative;
+    display:grid;grid-template-columns:2fr 1fr 1.2fr;
+    gap:3rem;max-width:1100px;
+    margin:0 auto 3rem;padding:3.5rem 1rem 0;
+}
+.footer-col h4{
+    position:relative;padding-bottom:.75rem;
+    font-family:'Outfit',sans-serif;color:#fff;
+    font-size:1.08rem;font-weight:700;
+    margin-bottom:1.35rem;letter-spacing:.02em;
+}
+.footer-col h4::after{
+    content:"";position:absolute;left:0;bottom:0;
+    width:32px;height:2px;
+    background:linear-gradient(90deg,#f1c40f,rgba(241,196,15,.2));
+    border-radius:2px;
+}
+.footer-col p{font-size:.9rem;line-height:1.7;color:#94a3b8;margin-bottom:1rem;max-width:44ch}
+.footer-contact-item{
+    display:flex;align-items:flex-start;gap:10px;
+    margin-bottom:.85rem;font-size:.9rem;color:#94a3b8;line-height:1.6;
+}
+.footer-contact-item svg{
+    width:16px;height:16px;color:#f1c40f;flex-shrink:0;margin-top:3px;
+    filter:drop-shadow(0 0 4px rgba(241,196,15,.35));
+}
+.footer-col a.footer-contact-link{color:#94a3b8;text-decoration:none;transition:color .3s ease}
+.footer-col a.footer-contact-link:hover{color:#f1c40f;text-decoration:underline}
+.footer-links{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.75rem}
+.footer-links a{
+    position:relative;display:inline-block;
+    color:#94a3b8;text-decoration:none;font-size:.9rem;padding-left:0;
+    transition:color .3s,transform .3s cubic-bezier(.19,1,.22,1),padding-left .3s;
+}
+.footer-links a::before{
+    content:"";position:absolute;left:0;top:50%;
+    width:0;height:1px;background:#f1c40f;
+    transition:width .3s cubic-bezier(.19,1,.22,1);transform:translateY(-50%);
+}
+.footer-links a:hover{color:#f1c40f;padding-left:14px}
+.footer-links a:hover::before{width:8px}
+.footer-bottom{
+    position:relative;max-width:1100px;margin:0 auto;
+    padding:1.5rem 1rem 0;
+    border-top:1px solid rgba(255,255,255,.06);
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:.85rem;color:#64748b;
+}
+.footer-bottom p:first-child{letter-spacing:.02em}
+.footer-bottom p:last-child{
+    color:#94a3b8;display:inline-flex;align-items:center;gap:8px;
+}
+.footer-bottom p:last-child::before{
+    content:"";width:6px;height:6px;border-radius:50%;
+    background:#f1c40f;box-shadow:0 0 8px rgba(241,196,15,.7);
+}
+@media(max-width:991.98px){
+    .footer-grid{grid-template-columns:1fr;gap:2rem;padding-top:2.5rem}
+    .footer-bottom{flex-direction:column;text-align:center;gap:.5rem}
+}
 </style>
+
+
 
 <div class="career-page">
 
 {{-- ==================== HERO HEADER ==================== --}}
 <section class="career-hero-img">
 
-    <img src="{{ asset('images/bgatasservice.jpeg') }}"
+    <img src="{{ asset('images/karir.jpeg') }}"
          alt="Karir PT Bachri Samudera Indonesia"
          class="career-hero-bg">
 
@@ -429,5 +550,68 @@
 
 </div>
 
-@include('partials.footer')
+
+{{-- ============================================================
+     FOOTER
+     ============================================================ --}}
+    <footer class="site-footer">
+        <div class="hp-footer-city" aria-hidden="true">
+            <div class="hp-city-track hp-city-track-front">
+                <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-front"/></svg>
+                <svg viewBox="0 0 2400 220" preserveAspectRatio="none"><use href="#hp-skyline-front"/></svg>
+            </div>
+        </div>
+
+        <div class="hp-footer-bar" aria-hidden="true"></div>
+
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>PT Bachri Samudera Indonesia</h4>
+                <p>Perusahaan profesional yang bergerak di bidang layanan dan solusi terpercaya, berkomitmen memberikan pelayanan terbaik bagi setiap klien dengan standar kualitas tinggi.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Menu Utama</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url('/') }}">Beranda</a></li>
+                    <li><a href="{{ url('/about') }}">Tentang Kami</a></li>
+                    <li><a href="{{ url('/services') }}">Layanan</a></li>
+                    <li><a href="{{ url('/contact') }}">Hubungi Kami</a></li>
+                    <li><a href="{{ route('careers.index') }}">Karir</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Hubungi Kami</h4>
+                <div class="footer-contact-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <span>
+                        <a href="https://maps.google.com/?q=ReniJaya+Office+Jl+Kenari+XV+Pamulang+Barat+Tangerang+Selatan" target="_blank" class="footer-contact-link">
+                            ReniJaya Office, Jl. Kenari XV No. 12, Pamulang Barat, Pamulang - Tangerang Selatan
+                        </a>
+                    </span>
+                </div>
+                <div class="footer-contact-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    <span>Email: <a href="mailto:bachrisamuderaindonesia@gmail.com" class="footer-contact-link">bachrisamuderaindonesia@gmail.com</a></span>
+                </div>
+                <div class="footer-contact-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                    </svg>
+                    <span>Telepon: <a href="tel:085714141802" class="footer-contact-link">0857 1414 1802</a></span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; {{ date('Y') }} PT Bachri Samudera Indonesia. All rights reserved.</p>
+            <p>Professional &amp; Reliable Service</p>
+        </div>
+    </footer>
+
+ 
+  
 @endsection

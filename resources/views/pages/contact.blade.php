@@ -863,6 +863,7 @@
                 <li><a href="{{ url('/about') }}">Tentang Kami</a></li>
                 <li><a href="{{ url('/services') }}">Layanan</a></li>
                 <li><a href="{{ url('/contact') }}">Hubungi Kami</a></li>
+                <li><a href="{{ route('careers.index') }}">Karir</a></li>
             </ul>
         </div>
         <div class="footer-col">

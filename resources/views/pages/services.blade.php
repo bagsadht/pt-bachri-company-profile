@@ -209,36 +209,151 @@
         font-size: 1.2rem; line-height: 1;
     }
 
-    /* ==================== PROCESS TIMELINE ==================== */
-    .process-timeline-section { padding: 2rem 0 4rem; position: relative; z-index: 2; }
+    /* ==================== PROCESS TIMELINE (UPDATED) ==================== */
+.process-timeline-section { padding: 2rem 0 4rem; position: relative; z-index: 2; }
 
-    .process-bar {
-        max-width: 1200px; margin: 0 auto; padding: 1.75rem 2rem;
-        background: rgba(11, 19, 30, 0.9);
-        border: 1px solid rgba(241, 196, 15, 0.3);
-        border-radius: 16px; display: flex; align-items: center;
-        justify-content: space-between; gap: 1rem;
-        backdrop-filter: blur(10px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-    }
+.process-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
 
-    .process-step { display: flex; align-items: center; gap: 12px; }
+.process-card {
+    background: rgba(11, 19, 30, 0.9);
+    border: 1px solid rgba(241, 196, 15, 0.3);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
 
-    .process-icon-box {
-        width: 45px; height: 45px;
-        background: rgba(241, 196, 15, 0.1);
-        border: 1px solid rgba(241, 196, 15, 0.4);
-        border-radius: 10px; display: flex; align-items: center;
-        justify-content: center; color: #f1c40f; flex-shrink: 0;
-    }
+.process-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(241, 196, 15, 0.8);
+    box-shadow: 0 15px 35px rgba(241, 196, 15, 0.15);
+}
 
-    .process-icon-box svg { width: 22px; height: 22px; }
+.process-icon-box {
+    width: 55px; height: 55px;
+    background: rgba(241, 196, 15, 0.1);
+    border: 1px solid rgba(241, 196, 15, 0.4);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #f1c40f; flex-shrink: 0;
+    transition: all 0.3s ease;
+}
 
-    .process-text h5 {
-        font-family: 'Outfit', sans-serif; font-weight: 700;
-        font-size: 0.95rem; color: #ffffff; margin: 0;
-    }
+.process-card:hover .process-icon-box {
+    background: #f1c40f;
+    color: #0b131e;
+    box-shadow: 0 0 20px rgba(241, 196, 15, 0.5);
+}
 
-    .process-arrow { color: #f1c40f; font-weight: bold; font-size: 1.2rem; flex-shrink: 0; }
+.process-icon-box svg { width: 24px; height: 24px; }
+
+.process-text h5 {
+    font-family: 'Outfit', sans-serif; font-weight: 700;
+    font-size: 1.05rem; color: #ffffff; margin: 0;
+}
+
+/* ==================== FAQ (UPDATED) ==================== */
+.faq-section { padding: 4rem 0 5rem; position: relative; z-index: 3; }
+
+.faq-light-box {
+    max-width: 1200px; margin: 0 auto; padding: 0;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+}
+
+.faq-title-light {
+    font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 2rem;
+    color: #ffffff; text-align: center; margin: 0 0 2.5rem 0;
+    letter-spacing: -0.02em;
+}
+
+.faq-title-light::after {
+    content: ''; display: block; width: 70px; height: 4px;
+    background: linear-gradient(90deg, #d4a017, #f1c40f);
+    border-radius: 2px; margin: 0.9rem auto 0;
+}
+
+.faq-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem; align-items: start;
+}
+
+.faq-item {
+    background: #ffffff; border: 1px solid #e5e7eb;
+    border-radius: 12px; padding: 0; overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    border-color: #d4a017;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.faq-item[open] {
+    border-color: #d4a017;
+    box-shadow: 0 10px 20px rgba(212, 160, 23, 0.15);
+}
+
+.faq-item-q {
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem;
+    color: #1e2f55; line-height: 1.5; padding: 1.25rem 1.5rem;
+    cursor: pointer; display: flex; justify-content: space-between;
+    align-items: center; gap: 1rem; list-style: none;
+    user-select: none; transition: background 0.25s ease; margin: 0;
+}
+
+.faq-item-q::-webkit-details-marker { display: none; }
+.faq-item-q::marker { display: none; content: ''; }
+.faq-item-q:hover { background: rgba(30, 47, 85, 0.02); }
+
+.faq-icon {
+    width: 20px; height: 20px; flex-shrink: 0;
+    color: #1e2f55;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease;
+}
+
+.faq-item[open] .faq-icon {
+    transform: rotate(45deg);
+    color: #d4a017;
+}
+
+.faq-item-a {
+    font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.95rem;
+    color: #4b5563; line-height: 1.65;
+    padding: 0 1.5rem 1.25rem 1.5rem; margin: 0;
+    animation: faqSlideDown 0.3s ease;
+}
+
+@keyframes faqSlideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive untuk FAQ & Process */
+@media (max-width: 991.98px) {
+    .faq-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+    .faq-title-light { font-size: 1.6rem; }
+    .faq-item-q { padding: 1rem 1.25rem; font-size: 0.95rem; }
+    .faq-item-a { padding: 0 1.25rem 1rem 1.25rem; font-size: 0.9rem; }
+    .process-grid { grid-template-columns: 1fr; }
+}
 
     /* ==================== PORTOFOLIO ==================== */
     .portfolio-section { padding: 4rem 0 5rem; position: relative; z-index: 2; }
@@ -720,102 +835,125 @@
         box-shadow: 0 0 30px rgba(241, 196, 15, 0.4);
     }
 
-    /* ==================== FOOTER STYLING ==================== */
-    .site-footer {
-        background: #0b131e;
-        color: #94a3b8;
-        padding: 5rem 0 2rem;
-        position: relative;
-        z-index: 2;
-        border-top: 1px solid rgba(241, 196, 15, 0.15);
-    }
+    /* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer{
+    position:relative;z-index:2;
+    background:#080C1F;color:#94a3b8;
+    padding:0 0 2rem;
+    overflow:hidden;isolation:isolate;
+}
+.site-footer::before{
+    content:"";
+    position:absolute;inset:0;
+    background-image:var(--hp-header-url);
+    background-size:cover;background-position:center 40%;
+    filter:blur(75px) saturate(0.4) brightness(0.22);
+    opacity:.55;z-index:-1;
+    transform:translate3d(0,0,0) scale(1.08);
+    animation:hp-footer-drift 80s cubic-bezier(.4,0,.6,1) infinite alternate;
+    will-change:transform;
+}
+@keyframes hp-footer-drift{
+    0%   { transform:translate3d(0,0,0) scale(1.08); }
+    100% { transform:translate3d(-1.5%,1%,0) scale(1.14); }
+}
+.site-footer::after{
+    content:"";
+    position:absolute;inset:0;
+    background:
+        linear-gradient(180deg,rgba(6,10,26,.65) 0%,rgba(6,10,26,.85) 40%,rgba(4,7,16,.95) 100%),
+        radial-gradient(ellipse 60% 40% at 50% 0%,rgba(241,196,15,.05),transparent 70%);
+    z-index:-1;pointer-events:none;
+}
 
-    .footer-grid {
-        display: grid;
-        grid-template-columns: 2fr 1.2fr 2fr;
-        gap: 3rem;
-        max-width: 1250px;
-        margin: 0 auto 3rem;
-        padding: 0 1.5rem;
-    }
+.hp-footer-city{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    height:130px;
+    z-index:-1;
+    opacity:.32;
+    pointer-events:none;
+    overflow:hidden;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 55%,#000 100%);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 55%,#000 100%);
+}
+.hp-footer-city .hp-city-track svg{height:220px}
+.hp-footer-city .hp-city-track{bottom:0}
 
-    .footer-col h4 {
-        font-family: 'Outfit', sans-serif;
-        color: #ffffff;
-        font-size: 1.2rem;
-        font-weight: 700;
-        margin-bottom: 1.5rem;
-        letter-spacing: -0.01em;
-    }
+.hp-footer-bar{
+    position:relative;height:1px;width:100%;
+    background:linear-gradient(90deg,transparent 5%,rgba(241,196,15,.5) 50%,transparent 95%);
+}
+.hp-footer-bar::after{
+    content:"";position:absolute;top:-8px;left:50%;
+    width:56px;height:16px;margin-left:-28px;
+    background:radial-gradient(ellipse at center,rgba(241,196,15,.35),transparent 70%);
+    pointer-events:none;
+}
 
-    .footer-col p {
-        font-size: 0.95rem;
-        line-height: 1.7;
-        color: rgba(255, 255, 255, 0.75);
-        margin: 0;
-    }
-
-    .footer-links {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.85rem;
-    }
-
-    .footer-links li a {
-        color: rgba(255, 255, 255, 0.75);
-        text-decoration: none;
-        font-size: 0.95rem;
-        transition: color 0.3s ease, padding-left 0.3s ease;
-    }
-
-    .footer-links li a:hover {
-        color: #f1c40f;
-        padding-left: 5px;
-    }
-
-    .footer-contact-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        margin-bottom: 1.1rem;
-        font-size: 0.95rem;
-        color: rgba(255, 255, 255, 0.75);
-        line-height: 1.5;
-    }
-
-    .footer-contact-item svg {
-        width: 20px;
-        height: 20px;
-        color: #f1c40f;
-        flex-shrink: 0;
-        margin-top: 3px;
-    }
-
-    .footer-contact-link {
-        color: rgba(255, 255, 255, 0.75);
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-
-    .footer-contact-link:hover {
-        color: #f1c40f;
-        text-decoration: underline;
-    }
-
-    .footer-bottom {
-        max-width: 1250px;
-        margin: 0 auto;
-        padding: 1.5rem 1.5rem 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.5);
-    }
+.footer-grid{
+    position:relative;
+    display:grid;grid-template-columns:2fr 1fr 1.2fr;
+    gap:3rem;max-width:1100px;
+    margin:0 auto 3rem;padding:3.5rem 1rem 0;
+}
+.footer-col h4{
+    position:relative;padding-bottom:.75rem;
+    font-family:'Outfit',sans-serif;color:#fff;
+    font-size:1.08rem;font-weight:700;
+    margin-bottom:1.35rem;letter-spacing:.02em;
+}
+.footer-col h4::after{
+    content:"";position:absolute;left:0;bottom:0;
+    width:32px;height:2px;
+    background:linear-gradient(90deg,#f1c40f,rgba(241,196,15,.2));
+    border-radius:2px;
+}
+.footer-col p{font-size:.9rem;line-height:1.7;color:#94a3b8;margin-bottom:1rem;max-width:44ch}
+.footer-contact-item{
+    display:flex;align-items:flex-start;gap:10px;
+    margin-bottom:.85rem;font-size:.9rem;color:#94a3b8;line-height:1.6;
+}
+.footer-contact-item svg{
+    width:16px;height:16px;color:#f1c40f;flex-shrink:0;margin-top:3px;
+    filter:drop-shadow(0 0 4px rgba(241,196,15,.35));
+}
+.footer-col a.footer-contact-link{color:#94a3b8;text-decoration:none;transition:color .3s ease}
+.footer-col a.footer-contact-link:hover{color:#f1c40f;text-decoration:underline}
+.footer-links{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.75rem}
+.footer-links a{
+    position:relative;display:inline-block;
+    color:#94a3b8;text-decoration:none;font-size:.9rem;padding-left:0;
+    transition:color .3s,transform .3s cubic-bezier(.19,1,.22,1),padding-left .3s;
+}
+.footer-links a::before{
+    content:"";position:absolute;left:0;top:50%;
+    width:0;height:1px;background:#f1c40f;
+    transition:width .3s cubic-bezier(.19,1,.22,1);transform:translateY(-50%);
+}
+.footer-links a:hover{color:#f1c40f;padding-left:14px}
+.footer-links a:hover::before{width:8px}
+.footer-bottom{
+    position:relative;max-width:1100px;margin:0 auto;
+    padding:1.5rem 1rem 0;
+    border-top:1px solid rgba(255,255,255,.06);
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:.85rem;color:#64748b;
+}
+.footer-bottom p:first-child{letter-spacing:.02em}
+.footer-bottom p:last-child{
+    color:#94a3b8;display:inline-flex;align-items:center;gap:8px;
+}
+.footer-bottom p:last-child::before{
+    content:"";width:6px;height:6px;border-radius:50%;
+    background:#f1c40f;box-shadow:0 0 8px rgba(241,196,15,.7);
+}
+@media(max-width:991.98px){
+    .footer-grid{grid-template-columns:1fr;gap:2rem;padding-top:2.5rem}
+    .footer-bottom{flex-direction:column;text-align:center;gap:.5rem}
+}
 
     /* ==================== WHATSAPP ==================== */
     .floating-whatsapp {
@@ -1024,50 +1162,110 @@
         </div>
     </section>
 
-    {{-- PROCESS TIMELINE --}}
+        {{-- PROCESS TIMELINE (UPDATED) --}}
     <section class="process-timeline-section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="section-header" style="margin-bottom: 2rem;">
+            <div class="section-header" style="margin-bottom: 2.5rem;">
                 <span class="section-badge">Alur Kerja</span>
                 <h2 class="section-title" style="font-size: 1.9rem;">Proses <span class="gold">Kami</span></h2>
             </div>
-            <div class="process-bar">
-
-                <div class="process-step">
+            
+            <div class="process-grid">
+                <!-- Step 1 -->
+                <div class="process-card">
                     <div class="process-icon-box">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
                     </div>
                     <div class="process-text"><h5>Konsep</h5></div>
                 </div>
-                <div class="process-arrow">&rarr;</div>
-                <div class="process-step">
+                <!-- Step 2 -->
+                <div class="process-card">
                     <div class="process-icon-box">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     </div>
                     <div class="process-text"><h5>Desain</h5></div>
                 </div>
-                <div class="process-arrow">&rarr;</div>
-                <div class="process-step">
+                <!-- Step 3 -->
+                <div class="process-card">
                     <div class="process-icon-box">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     </div>
                     <div class="process-text"><h5>Produksi</h5></div>
                 </div>
-                <div class="process-arrow">&rarr;</div>
-                <div class="process-step">
+                <!-- Step 4 -->
+                <div class="process-card">
                     <div class="process-icon-box">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                     </div>
                     <div class="process-text"><h5>Instalasi</h5></div>
                 </div>
-                <div class="process-arrow">&rarr;</div>
-                <div class="process-step">
+                <!-- Step 5 -->
+                <div class="process-card">
                     <div class="process-icon-box">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                     </div>
                     <div class="process-text"><h5>Pengelolaan</h5></div>
                 </div>
+            </div>
+        </div>
+    </section>
 
+    {{-- FAQ (UPDATED) --}}
+    <section class="faq-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="faq-light-box">
+                <h2 class="faq-title-light">Pertanyaan Umum</h2>
+                <div class="faq-grid">
+
+                    <details class="faq-item">
+                        <summary class="faq-item-q">
+                            <span>Apa saja layanan utama yang ditawarkan oleh PT Bachri Samudera Indonesia?</span>
+                            <svg class="faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                        </summary>
+                        <p class="faq-item-a">Kami adalah perusahaan multibisnis yang bergerak di bidang Konstruksi, Exterior &amp; Interior, Event Management, Desain, serta Periklanan. Kami hadir memberikan solusi kreatif untuk membangun brand, ruang, dan pengalaman.</p>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary class="faq-item-q">
+                            <span>Bagaimana sistem penentuan harga atau biaya untuk sebuah proyek (Interior, Event, atau Konstruksi)?</span>
+                            <svg class="faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                        </summary>
+                        <p class="faq-item-a">Biaya proyek sangat fleksibel dan akan disesuaikan dengan skala proyek, spesifikasi material, dan kebutuhan khusus klien.</p>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary class="faq-item-q">
+                            <span>Apakah layanannya hanya sebatas pembuatan desain, atau mencakup tahap produksi dan eksekusi?</span>
+                            <svg class="faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                        </summary>
+                        <p class="faq-item-a">Kami melayani segalanya dari awal hingga akhir. Kami memastikan setiap solusi visual dan branding memiliki kualitas terbaik dari tahap konsep hingga eksekusi. Selain itu, kami juga memiliki kemampuan desain kreatif dan produksi mandiri.</p>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary class="faq-item-q">
+                            <span>Apakah PT Bachri Samudera Indonesia dapat menangani proyek yang terintegrasi, misalnya pembuatan booth pameran (konstruksi/interior) sekaligus aktivasi acaranya (event management)?</span>
+                            <svg class="faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                        </summary>
+                        <p class="faq-item-a">Ya, PT Bachri Samudera Indonesia dapat menangani proyek terintegrasi mulai dari pembuatan booth (konstruksi/interior) hingga aktivasi acara (event management). Keunggulan produksi mandiri dan konsep layanan satu pintu membuat seluruh proses dari desain, pembangunan, hingga eksekusi promosi berjalan lebih efisien.</p>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary class="faq-item-q">
+                            <span>Bagaimana pengalaman tim dalam menangani Event Organizer, terutama jika terjadi situasi darurat di lapangan?</span>
+                            <svg class="faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                        </summary>
+                        <p class="faq-item-a">Sebagai profesional yang berpengalaman di industri Event Organizer, tim kami senantiasa berinovasi dan sangat cepat tanggap terhadap kebutuhan klien. Kami terbiasa dan mampu mengelola berbagai situasi di lapangan, termasuk kondisi darurat sekalipun.</p>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary class="faq-item-q">
+                            <span>Bagaimana tahapan atau alur kerja sama pengerjaan proyek di PT Bachri Samudera Indonesia dari awal hingga selesai?</span>
+                            <svg class="faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                        </summary>
+                        <p class="faq-item-a">Kami berkomitmen untuk memastikan setiap solusi visual dan branding memiliki kualitas terbaik mulai dari tahap konsep hingga tahap eksekusi.</p>
+                    </details>
+
+                </div>
             </div>
         </div>
     </section>
@@ -1269,65 +1467,7 @@
 
     </section>
 
-    {{-- FAQ --}}
-    <section class="faq-section">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="faq-light-box">
-                <h2 class="faq-title-light">Pertanyaan Umum</h2>
-                <div class="faq-grid">
-
-                    <details class="faq-item">
-                        <summary class="faq-item-q">
-                            <span>1. Apa saja layanan utama yang ditawarkan oleh PT Bachri Samudera Indonesia?</span>
-                            <svg class="faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                        </summary>
-                        <p class="faq-item-a">Kami adalah perusahaan multibisnis yang bergerak di bidang Konstruksi, Exterior &amp; Interior, Event Management, Desain, serta Periklanan. Kami hadir memberikan solusi kreatif untuk membangun brand, ruang, dan pengalaman.</p>
-                    </details>
-
-                    <details class="faq-item">
-                        <summary class="faq-item-q">
-                            <span>4. Bagaimana sistem penentuan harga atau biaya untuk sebuah proyek (Interior, Event, atau Konstruksi)?</span>
-                            <svg class="faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                        </summary>
-                        <p class="faq-item-a">Biaya proyek sangat fleksibel dan akan disesuaikan dengan skala proyek, spesifikasi material, dan kebutuhan khusus klien.</p>
-                    </details>
-
-                    <details class="faq-item">
-                        <summary class="faq-item-q">
-                            <span>2. Apakah layanannya hanya sebatas pembuatan desain, atau mencakup tahap produksi dan eksekusi?</span>
-                            <svg class="faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                        </summary>
-                        <p class="faq-item-a">Kami melayani segalanya dari awal hingga akhir. Kami memastikan setiap solusi visual dan branding memiliki kualitas terbaik dari tahap konsep hingga eksekusi. Selain itu, kami juga memiliki kemampuan desain kreatif dan produksi mandiri.</p>
-                    </details>
-
-                    <details class="faq-item">
-                        <summary class="faq-item-q">
-                            <span>5. Apakah PT Bachri Samudera Indonesia dapat menangani proyek yang terintegrasi, misalnya pembuatan booth pameran (konstruksi/interior) sekaligus aktivasi acaranya (event management)?</span>
-                            <svg class="faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                        </summary>
-                        <p class="faq-item-a">Ya, PT Bachri Samudera Indonesia dapat menangani proyek terintegrasi mulai dari pembuatan booth (konstruksi/interior) hingga aktivasi acara (event management). Keunggulan produksi mandiri dan konsep layanan satu pintu membuat seluruh proses dari desain, pembangunan, hingga eksekusi promosi berjalan lebih efisien.</p>
-                    </details>
-
-                    <details class="faq-item">
-                        <summary class="faq-item-q">
-                            <span>3. Bagaimana pengalaman tim dalam menangani Event Organizer, terutama jika terjadi situasi darurat di lapangan?</span>
-                            <svg class="faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                        </summary>
-                        <p class="faq-item-a">Sebagai profesional yang berpengalaman di industri Event Organizer, tim kami senantiasa berinovasi dan sangat cepat tanggap terhadap kebutuhan klien. Kami terbiasa dan mampu mengelola berbagai situasi di lapangan, termasuk kondisi darurat sekalipun.</p>
-                    </details>
-
-                    <details class="faq-item">
-                        <summary class="faq-item-q">
-                            <span>6. Bagaimana tahapan atau alur kerja sama pengerjaan proyek di PT Bachri Samudera Indonesia dari awal hingga selesai?</span>
-                            <svg class="faq-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                        </summary>
-                        <p class="faq-item-a">Kami berkomitmen untuk memastikan setiap solusi visual dan branding memiliki kualitas terbaik mulai dari tahap konsep hingga tahap eksekusi.</p>
-                    </details>
-
-                </div>
-            </div>
-        </div>
-    </section>
+    
 
     {{-- CTA --}}
     <section class="cta-banner-section">
@@ -1356,6 +1496,7 @@
                 <li><a href="{{ url('/about') }}">Tentang Kami</a></li>
                 <li><a href="{{ url('/services') }}">Layanan</a></li>
                 <li><a href="{{ url('/contact') }}">Hubungi Kami</a></li>
+                <li><a href="{{ route('careers.index') }}">Karir</a></li>
             </ul>
         </div>
         <div class="footer-col">
