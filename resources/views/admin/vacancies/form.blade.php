@@ -15,59 +15,59 @@
     <div class="row g-3">
         <div class="col-12">
             <label class="form-label small fw-semibold">Foto Lowongan</label>
-            @if($vacancy->image_path)
+            @if($vacancy->path_gambar)
                 <div class="mb-2">
                     <img src="{{ $vacancy->imageUrl() }}" alt="Foto lowongan" style="max-width:220px;border-radius:10px;" class="d-block mb-2">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="remove_image" name="remove_image" value="1">
-                        <label class="form-check-label small text-danger" for="remove_image">Hapus foto ini</label>
+                        <input type="checkbox" class="form-check-input" id="hapus_gambar" name="hapus_gambar" value="1">
+                        <label class="form-check-label small text-danger" for="hapus_gambar">Hapus foto ini</label>
                     </div>
                 </div>
             @endif
-            <input type="file" name="image" class="form-control" accept=".jpg,.jpeg,.png,.webp">
+            <input type="file" name="gambar" class="form-control" accept=".jpg,.jpeg,.png,.webp">
             <small class="text-muted">JPG, PNG, atau WEBP. Maksimal 2 MB. Rasio landscape (mis. 800x500) hasilnya paling rapi.</small>
         </div>
 
         <div class="col-md-8">
             <label class="form-label small fw-semibold">Judul Posisi *</label>
-            <input type="text" name="title" class="form-control" value="{{ old('title', $vacancy->title) }}" required>
+            <input type="text" name="judul" class="form-control" value="{{ old('judul', $vacancy->judul) }}" required>
         </div>
         <div class="col-md-4">
             <label class="form-label small fw-semibold">Departemen</label>
-            <input type="text" name="department" class="form-control" value="{{ old('department', $vacancy->department) }}">
+            <input type="text" name="departemen" class="form-control" value="{{ old('departemen', $vacancy->departemen) }}">
         </div>
         <div class="col-md-4">
             <label class="form-label small fw-semibold">Lokasi *</label>
-            <input type="text" name="location" class="form-control" value="{{ old('location', $vacancy->location) }}" required>
+            <input type="text" name="lokasi" class="form-control" value="{{ old('lokasi', $vacancy->lokasi) }}" required>
         </div>
         <div class="col-md-4">
             <label class="form-label small fw-semibold">Tipe Pekerjaan *</label>
-            <select name="employment_type" class="form-select" required>
+            <select name="jenis_pekerjaan" class="form-select" required>
                 @foreach(\App\Models\JobVacancy::EMPLOYMENT_TYPES as $type)
-                    <option value="{{ $type }}" @selected(old('employment_type', $vacancy->employment_type) === $type)>{{ $type }}</option>
+                    <option value="{{ $type }}" @selected(old('jenis_pekerjaan', $vacancy->jenis_pekerjaan) === $type)>{{ $type }}</option>
                 @endforeach
             </select>
         </div>
         <div class="col-md-4">
             <label class="form-label small fw-semibold">Kisaran Gaji</label>
-            <input type="text" name="salary_range" class="form-control" placeholder="mis. Rp 5–7 juta" value="{{ old('salary_range', $vacancy->salary_range) }}">
+            <input type="text" name="kisaran_gaji" class="form-control" placeholder="mis. Rp 5–7 juta" value="{{ old('kisaran_gaji', $vacancy->kisaran_gaji) }}">
         </div>
         <div class="col-12">
             <label class="form-label small fw-semibold">Deskripsi Pekerjaan *</label>
-            <textarea name="description" rows="5" class="form-control" required>{{ old('description', $vacancy->description) }}</textarea>
+            <textarea name="deskripsi" rows="5" class="form-control" required>{{ old('deskripsi', $vacancy->deskripsi) }}</textarea>
         </div>
         <div class="col-12">
             <label class="form-label small fw-semibold">Persyaratan * <span class="text-muted fw-normal">(satu persyaratan per baris)</span></label>
-            <textarea name="requirements" rows="6" class="form-control" required>{{ old('requirements', $vacancy->requirements) }}</textarea>
+            <textarea name="persyaratan" rows="6" class="form-control" required>{{ old('persyaratan', $vacancy->persyaratan) }}</textarea>
         </div>
         <div class="col-md-4">
             <label class="form-label small fw-semibold">Batas Lamaran</label>
-            <input type="date" name="deadline" class="form-control" value="{{ old('deadline', $vacancy->deadline?->format('Y-m-d')) }}">
+            <input type="date" name="batas_lamaran" class="form-control" value="{{ old('batas_lamaran', $vacancy->batas_lamaran?->format('Y-m-d')) }}">
         </div>
         <div class="col-md-4 d-flex align-items-end">
             <div class="form-check form-switch">
-                <input type="checkbox" class="form-check-input" id="is_active" name="is_active" value="1" @checked(old('is_active', $vacancy->is_active))>
-                <label class="form-check-label small" for="is_active">Tampilkan di situs</label>
+                <input type="checkbox" class="form-check-input" id="aktif" name="aktif" value="1" @checked(old('aktif', $vacancy->aktif))>
+                <label class="form-check-label small" for="aktif">Tampilkan di situs</label>
             </div>
         </div>
     </div>

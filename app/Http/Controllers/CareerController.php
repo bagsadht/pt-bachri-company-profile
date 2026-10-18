@@ -20,14 +20,14 @@ class CareerController extends Controller
 
     public function show(JobVacancy $vacancy)
     {
-        abort_unless($vacancy->is_active, 404);
+        abort_unless($vacancy->aktif, 404);
 
         return view('pages.careers.show', compact('vacancy'));
     }
 
     public function apply(Request $request, JobVacancy $vacancy)
     {
-        abort_unless($vacancy->is_active, 404);
+        abort_unless($vacancy->aktif, 404);
 
         if (! $vacancy->isOpen()) {
             return redirect()->route('careers.show', $vacancy)
@@ -53,15 +53,15 @@ class CareerController extends Controller
                 ->with('error', 'Email ini sudah pernah dipakai untuk melamar posisi tersebut.');
         }
 
-        // CV disimpan di storage privat (tidak bisa dibuka lewat URL publik)
+        // CV disimpan di folder storage/app/cvs (Privat, aman)
         $cvPath = $request->file('cv')->store('cvs');
 
         $application = $vacancy->applications()->create([
-            'name'         => $validated['name'],
-            'email'        => $validated['email'],
-            'phone'        => $validated['phone'],
-            'cover_letter' => $validated['cover_letter'] ?? null,
-            'cv_path'      => $cvPath,
+            'nama'          => $validated['name'],
+            'email'         => $validated['email'],
+            'telepon'       => $validated['phone'],
+            'surat_lamaran' => $validated['cover_letter'] ?? null,
+            'path_cv'       => $cvPath,
         ]);
 
         $this->notifyAdmin($vacancy, $application);
@@ -70,23 +70,22 @@ class CareerController extends Controller
             ->with('success', 'Lamaran Anda berhasil dikirim! Tim kami akan menghubungi Anda jika profil Anda sesuai.');
     }
 
-    // Kirim email notifikasi ke admin. Jika email gagal, lamaran tetap tersimpan.
     private function notifyAdmin(JobVacancy $vacancy, JobApplication $application): void
     {
         try {
             Mail::send([], [], function ($message) use ($vacancy, $application) {
-                $message->to(config('admin.notify_email'))
-                    ->replyTo($application->email, $application->name)
-                    ->subject('Lamaran Baru: ' . $vacancy->title . ' - ' . $application->name)
+                $message->to(config('admin.notify_email', 'admin@bachrisamudera.co.id'))
+                    ->replyTo($application->email, $application->nama)
+                    ->subject('Lamaran Baru: ' . $vacancy->judul . ' - ' . $application->nama)
                     ->html(
                         '<h3>Lamaran Baru</h3>' .
-                        '<p><strong>Posisi:</strong> ' . e($vacancy->title) . '</p>' .
-                        '<p><strong>Nama:</strong> ' . e($application->name) . '</p>' .
+                        '<p><strong>Posisi:</strong> ' . e($vacancy->judul) . '</p>' .
+                        '<p><strong>Nama:</strong> ' . e($application->nama) . '</p>' .
                         '<p><strong>Email:</strong> ' . e($application->email) . '</p>' .
-                        '<p><strong>No. Telepon:</strong> ' . e($application->phone) . '</p>' .
-                        '<p><strong>Surat Lamaran:</strong><br>' . nl2br(e($application->cover_letter ?? '-')) . '</p>'
+                        '<p><strong>No. Telepon:</strong> ' . e($application->telepon) . '</p>' .
+                        '<p><strong>Surat Lamaran:</strong><br>' . nl2br(e($application->surat_lamaran ?? '-')) . '</p>'
                     )
-                    ->attach(Storage::path($application->cv_path));
+                    ->attach(Storage::path($application->path_cv));
             });
         } catch (\Throwable $e) {
             Log::error('Gagal kirim notifikasi lamaran: ' . $e->getMessage());

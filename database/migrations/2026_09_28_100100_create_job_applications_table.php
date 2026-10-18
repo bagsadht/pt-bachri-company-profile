@@ -8,23 +8,23 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('job_applications', function (Blueprint $table) {
+        Schema::create('lamaran_kerja', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('job_vacancy_id')->constrained()->cascadeOnDelete();
-            $table->string('name');
+            $table->foreignId('lowongan_kerja_id')->constrained('lowongan_kerja')->cascadeOnDelete();
+            $table->string('nama');
             $table->string('email');
-            $table->string('phone', 20);
-            $table->text('cover_letter')->nullable();
-            $table->string('cv_path');
+            $table->string('telepon', 20);
+            $table->text('surat_lamaran')->nullable();
+            $table->string('path_cv');
             $table->string('status')->default('baru');
             $table->timestamps();
 
-            $table->unique(['job_vacancy_id', 'email']);
+            $table->unique(['lowongan_kerja_id', 'email']);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('job_applications');
+        Schema::dropIfExists('lamaran_kerja');
     }
 };

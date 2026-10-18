@@ -8,24 +8,25 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('job_vacancies', function (Blueprint $table) {
+        Schema::create('lowongan_kerja', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('judul');
             $table->string('slug')->unique();
-            $table->string('department')->nullable();
-            $table->string('location');
-            $table->string('employment_type');
-            $table->string('salary_range')->nullable();
-            $table->text('description');
-            $table->text('requirements');
-            $table->date('deadline')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->string('departemen')->nullable();
+            $table->string('lokasi');
+            $table->string('jenis_pekerjaan');
+            $table->string('kisaran_gaji')->nullable();
+            $table->string('path_gambar')->nullable();
+            $table->text('deskripsi');
+            $table->text('persyaratan');
+            $table->date('batas_lamaran')->nullable();
+            $table->boolean('aktif')->default(true);
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('job_vacancies');
+        Schema::dropIfExists('lowongan_kerja');
     }
 };

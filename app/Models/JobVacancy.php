@@ -8,19 +8,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class JobVacancy extends Model
 {
+    protected $table = 'lowongan_kerja';
+
     public const EMPLOYMENT_TYPES = ['Full Time', 'Part Time', 'Kontrak', 'Magang', 'Freelance'];
 
-   protected $fillable = [
-    'title', 'slug', 'department', 'location', 'employment_type',
-    'salary_range', 'image_path', 'description', 'requirements', 'deadline', 'is_active',
-];
-    
+    protected $fillable = [
+        'judul', 'slug', 'departemen', 'lokasi', 'jenis_pekerjaan',
+        'kisaran_gaji', 'path_gambar', 'deskripsi', 'persyaratan', 'batas_lamaran', 'aktif',
+    ];
 
     protected function casts(): array
     {
         return [
-            'deadline'  => 'date',
-            'is_active' => 'boolean',
+            'batas_lamaran' => 'date',
+            'aktif'         => 'boolean',
         ];
     }
 
@@ -32,32 +33,32 @@ class JobVacancy extends Model
 
     public function applications(): HasMany
     {
-        return $this->hasMany(JobApplication::class);
+        return $this->hasMany(JobApplication::class, 'lowongan_kerja_id');
     }
 
     // Lowongan aktif dan belum melewati batas waktu
     public function scopeOpen(Builder $query): Builder
     {
-        return $query->where('is_active', true)
+        return $query->where('aktif', true)
             ->where(function (Builder $q) {
-                $q->whereNull('deadline')->orWhereDate('deadline', '>=', now()->toDateString());
+                $q->whereNull('batas_lamaran')->orWhereDate('batas_lamaran', '>=', now()->toDateString());
             });
     }
 
     public function isOpen(): bool
     {
-        return $this->is_active && (! $this->deadline || $this->deadline->endOfDay()->isFuture());
+        return $this->aktif && (! $this->batas_lamaran || $this->batas_lamaran->endOfDay()->isFuture());
     }
 
     // Persyaratan dipecah per baris untuk ditampilkan sebagai daftar
     public function requirementList(): array
     {
-        return array_values(array_filter(array_map('trim', preg_split('/\R/', $this->requirements))));
+        return array_values(array_filter(array_map('trim', preg_split('/\R/', $this->persyaratan))));
     }
 
-        // URL foto lowongan, atau null kalau belum diunggah
+    // URL foto lowongan, atau null kalau belum diunggah
     public function imageUrl(): ?string
     {
-        return $this->image_path ? asset('storage/' . $this->image_path) : null;
+        return $this->path_gambar ? asset('storage/' . $this->path_gambar) : null;
     }
 }

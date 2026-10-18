@@ -10,15 +10,16 @@ class JobVacancySeeder extends Seeder
     public function run(): void
     {
         JobVacancy::updateOrCreate(['slug' => 'staf-administrasi'], [
-            'title'           => 'Staf Administrasi',
-            'department'      => 'Operasional',
-            'location'        => 'Tangerang Selatan',
-            'employment_type' => 'Full Time',
-            'salary_range'    => 'Sesuai UMR + tunjangan',
-            'description'     => "Mendukung kegiatan administrasi harian perusahaan, mulai dari pengarsipan dokumen, pembuatan laporan, hingga koordinasi dengan tim lapangan.",
-            'requirements'    => "Pendidikan minimal D3/S1 semua jurusan\nMahir Microsoft Office (Word, Excel)\nTeliti, rapi, dan bertanggung jawab\nBersedia ditempatkan di Pamulang, Tangerang Selatan",
-            'deadline'        => now()->addMonth()->toDateString(),
-            'is_active'       => true,
+            'judul'           => 'Staf Administrasi',
+            'departemen'      => 'Administrasi',
+            'lokasi'          => 'Jakarta',
+            'jenis_pekerjaan' => 'Full Time',
+            'kisaran_gaji'    => 'Rp 4.000.000 - Rp 5.500.000',
+            'path_gambar'     => null,
+            'deskripsi'       => 'Mengelola dokumen, arsip, dan administrasi harian perusahaan.',
+            'persyaratan'     => "Pendidikan minimal D3/S1 semua jurusan\nMahir Microsoft Office\nTeliti dan komunikatif\nMaksimal usia 30 tahun",
+            'batas_lamaran'   => now()->addMonths(2)->toDateString(),
+            'aktif'           => true,
         ]);
     }
 }

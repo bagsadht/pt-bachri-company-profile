@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class JobApplication extends Model
 {
+    protected $table = 'lamaran_kerja';
+
     public const STATUSES = [
         'baru'      => 'Baru',
         'diproses'  => 'Diproses',
@@ -19,12 +21,40 @@ class JobApplication extends Model
     public const ACTIVE = ['baru', 'diproses', 'wawancara'];
 
     protected $fillable = [
-        'job_vacancy_id', 'name', 'email', 'phone', 'cover_letter', 'cv_path', 'status',
+        'lowongan_kerja_id',
+        'nama',
+        'email',
+        'telepon',
+        'surat_lamaran',
+        'path_cv',
+        'status',
+
+        // Jadwal interview
+        'interview_date',
+        'interview_time',
+        'interview_location',
+        'interview_note',
+
+        // ✅ Field baru — untuk fitur "Terima & Kirim Email"
+        'email_sent_at',
+        'email_type',
+        'start_date',
+        'start_time',
+        'workplace',
+        'onboarding_notes',
+    ];
+
+    protected $casts = [
+        'interview_date' => 'date',
+        'interview_time' => 'string',      // disimpan sebagai TIME, bukan datetime
+        'email_sent_at'  => 'datetime',
+        'start_date'     => 'date',
+        'start_time'     => 'string',
     ];
 
     public function vacancy(): BelongsTo
     {
-        return $this->belongsTo(JobVacancy::class, 'job_vacancy_id');
+        return $this->belongsTo(JobVacancy::class, 'lowongan_kerja_id');
     }
 
     public function scopeActive($query)
@@ -32,7 +62,6 @@ class JobApplication extends Model
         return $query->whereIn('status', self::ACTIVE);
     }
 
-    // Label tahap seleksi terakhir untuk tabel & laporan
     public function stageLabel(): string
     {
         return match ($this->status) {
@@ -43,7 +72,6 @@ class JobApplication extends Model
         };
     }
 
-    // Status akhir yang disederhanakan: Aktif Seleksi / Diterima / Ditolak
     public function finalStatusLabel(): string
     {
         return match ($this->status) {
@@ -51,5 +79,16 @@ class JobApplication extends Model
             'ditolak'  => 'Ditolak',
             default    => 'Aktif Seleksi',
         };
+    }
+
+    public function getInterviewScheduleLabelAttribute(): ?string
+    {
+        if (! $this->interview_date || ! $this->interview_time) {
+            return null;
+        }
+
+        return $this->interview_date->translatedFormat('l, d M Y')
+             . ' · '
+             . substr($this->interview_time, 0, 5) . ' WIB';
     }
 }
